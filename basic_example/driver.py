@@ -18,13 +18,12 @@ def fc(rule_to_prove):
     try:
         #global activated
         #if activated == False:
-        # To run several times the forward-chaining test without
-        # executing again the engine complete reasoning
-        #activated = True
+            # To run several times the forward-chaining test without
+            # executing again the engine complete reasoning
+            # activated = True
 
         # Clean files and engine conclussions
         clean()
-
 
         # Measure time of the complete reasoning
         start_time = time.time()
@@ -32,11 +31,11 @@ def fc(rule_to_prove):
         end_time = time.time()
         fc_time = end_time - start_time
 
-        print ("fc time %.2f, %.0f asserts/sec" % \
+        print ("FC reasoning time: %.2f, %.0f asserts/sec" % \
             (fc_time, engine.get_kb('numbers').get_stats()[2] / fc_time))
 
         """
-        with engine.prove_goal('bc_numbers.honores_corazones_FINAL()') \
+        with engine.prove_goal('numbers.honores_corazones_FINAL()') \
           as gen:
             for vars, plan in gen:
                 print "SE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\n"
@@ -79,12 +78,24 @@ def fc(rule_to_prove):
 # driver.bc('bc_numbers.honores_corazones_new_post(S, 1)')
 def bc(rule_to_prove):
     try:
-        global activated
+        """global activated
         if activated == False:
-            clean()
-            engine.activate('fc_numbers')   # NECESSARY FOR HAVING ALL THE FACTS
-            engine.activate('bc_numbers')
+            # To run several times the backward-chaining test without
+            # executing again the engine complete reasoning
             activated = True
+        """
+
+        clean()
+
+        # Measure time of the complete reasoning
+        start_time = time.time()
+        engine.activate('fc_numbers')   # NECESSARY FOR HAVING ALL THE FACTS
+        engine.activate('bc_numbers')
+        end_time = time.time()
+        both_time = end_time - start_time
+
+        print ("FC and BC reasoning time: %.2f, %.0f asserts/sec" % \
+            (both_time, engine.get_kb('numbers').get_stats()[2] / both_time))
 
         """
         with engine.prove_goal('bc_numbers.honores_corazones_FINAL()') \
@@ -135,10 +146,11 @@ def bc(rule_to_prove):
 
         
         # We remove those mid rules from the conclussions file
+        # We leave only the final facts
         with open("midRules.txt", "w") as new_f:
             for followRule in midRules:
                 lines.remove(followRule)
-            # Write only the rules not to prove
+            # Write only the rules not to prove (final facts)
             new_f.writelines(lines)
         
         print (midRules)
@@ -148,7 +160,10 @@ def bc(rule_to_prove):
             # We run this rule to follow the reasoning
             bc(followRule.rstrip("\n"))
 
-        
+
+        print ("proof done.")
+        engine.print_stats()
+
 
     except:
         krb_traceback.print_exc()
@@ -156,7 +171,7 @@ def bc(rule_to_prove):
         #sys.exit(1)
 
 def clean():
-    print ("********RESETTING THE PROGRAM********\n\n")
+    print ("\n********RESETTING THE PROGRAM********\n\n")
     engine.reset()
     open("midRules.txt", "w").close()
     open("conclusiones.txt", "w").close()
