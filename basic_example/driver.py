@@ -15,26 +15,25 @@ activated = False
 
 # driver.fc('numbers.honores_corazones_new_post(S, 1)')
 def fc(rule_to_prove):
-    engine.reset()
     try:
-        global activated
-        if activated == False:
-            # Clean files and engine conclussions
-            clean()
-            engine.reset()
+        #global activated
+        #if activated == False:
+        # To run several times the forward-chaining test without
+        # executing again the engine complete reasoning
+        #activated = True
 
-            # Measure time of the complete reasoning
-            start_time = time.time()
-            engine.activate('fc_numbers')       # NECESSARY FOR HAVING ALL THE FACTS
-            end_time = time.time()
-            fc_time = end_time - start_time
+        # Clean files and engine conclussions
+        clean()
 
-            print "fc time %.2f, %.0f asserts/sec" % \
-            (fc_time, engine.get_kb('numbers').get_stats()[2] / fc_time)
 
-            # To run several times the forward-chaining test without
-            # executing again the engine complete reasoning
-            activated = True
+        # Measure time of the complete reasoning
+        start_time = time.time()
+        engine.activate('fc_numbers')       # NECESSARY FOR HAVING ALL THE FACTS
+        end_time = time.time()
+        fc_time = end_time - start_time
+
+        print ("fc time %.2f, %.0f asserts/sec" % \
+            (fc_time, engine.get_kb('numbers').get_stats()[2] / fc_time))
 
         """
         with engine.prove_goal('bc_numbers.honores_corazones_FINAL()') \
@@ -45,17 +44,21 @@ def fc(rule_to_prove):
         """
 
         goal = False
-        print "doing proof"
+        print ("doing proof")
         with engine.prove_goal(str(rule_to_prove)) \
           as gen2:
             for vars, plan in gen2:
                 #print "%s tiene %s PH en corazones\n" % (vars['player'], vars['puntos'])
                 #print plan
                 #print gen2
-                print "\n----\nTHE RULE YOU WROTE IT'S TRUE!!!!!!!!!!\n----\n"
                 goal = True
+        if goal == True:
+            print("\n------------\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n")
+        else:
+            print("\n------------\nThe rule you wrote is False.\n------------\n")
 
-        print "done"
+
+        print ("proof done.")
         engine.print_stats()
 
 
@@ -70,7 +73,8 @@ def fc(rule_to_prove):
 
     except:
         krb_traceback.print_exc()
-        sys.exit(1)
+        clean()
+        #sys.exit(1)
 
 # driver.bc('bc_numbers.honores_corazones_new_post(S, 1)')
 def bc(rule_to_prove):
@@ -78,7 +82,6 @@ def bc(rule_to_prove):
         global activated
         if activated == False:
             clean()
-            engine.reset()
             engine.activate('fc_numbers')   # NECESSARY FOR HAVING ALL THE FACTS
             engine.activate('bc_numbers')
             activated = True
@@ -98,6 +101,10 @@ def bc(rule_to_prove):
                 #print plan
                 #print gen2
                 goal = True
+        if goal == True:
+            print("\n------------\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n")
+        else:
+            print("\n------------\nThe rule you wrote is False.\n------------\n")
 
         """
             Pyke with backwards chaining only prints the last rule, altough
@@ -123,7 +130,7 @@ def bc(rule_to_prove):
                     midRules.append(line)
 
         if midRules == False:   # Empty list
-            print "SE ACABO WEEEEEEEYYYYYY"
+            print ("SE ACABO WEEEEEEEYYYYYY")
             return
 
         
@@ -134,10 +141,10 @@ def bc(rule_to_prove):
             # Write only the rules not to prove
             new_f.writelines(lines)
         
-        print midRules
+        print (midRules)
         # Now, we have to prove those mid rules
         for followRule in midRules:
-            print "SE VIENE"
+            print ("SE VIENE")
             # We run this rule to follow the reasoning
             bc(followRule.rstrip("\n"))
 
@@ -145,17 +152,18 @@ def bc(rule_to_prove):
 
     except:
         krb_traceback.print_exc()
-        sys.exit(1)
+        clean()
+        #sys.exit(1)
 
 def clean():
+    print ("********RESETTING THE PROGRAM********\n\n")
+    engine.reset()
     open("midRules.txt", "w").close()
     open("conclusiones.txt", "w").close()
     open("conclusiones_bc.txt", "w").close()
 
 
 """
-
-    python f = open("conclusiones_bc.txt", "a")
 
 
 python rule = "bc_numbers.honores_corazones_new(%s, %s)\n" % ($player, $puntos)
@@ -166,4 +174,4 @@ python rule = "bc_numbers.honores_corazones_new(%s, %s)\n" % ($player, $puntos)
 if __name__ == "__main__":
     import sys
     print ("Just for fun, ur name?")
-    print run(eval(sys.argv[1]), int(sys.argv[2]))
+    print (run(eval(sys.argv[1]), int(sys.argv[2])))

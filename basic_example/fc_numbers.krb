@@ -100,8 +100,8 @@ conclusiones_honores_corazones
 
         # If it gets here, we have conlussions about PH
 
-        #python if($tot < 5) print("MENOR")
-        #python else print("MAYOR")
+        #python if($tot < 5) print ("MENOR")
+        #python else print ("MAYOR")
     assert
         # Escribir en el fichero de conclusiones
         python phrase = "\nSE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\nEsto es porque se conocen de seguro %d y como minimo %d, y el total debe ser 5.\n\n" % ($tot, $tot_min)
