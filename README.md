@@ -25,4 +25,4 @@ Para cada usuario se lanzaría un proceso en el background del servidor donde se
 
 
 
--	DIFERENCIA ENTRE clean y cleanExcept!!!! Para poner "end proof with exceptions" 
+-	conclusiones_fc para guardar la traza de las pruebas que se han pedido demostrar con FC y han sido verdaderas (SOLO SE VA A GUARDAR LA SENTENCIA PROBADA, *NO EL RAZONAMIENTO*)

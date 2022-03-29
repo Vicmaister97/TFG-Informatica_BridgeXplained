@@ -15,10 +15,14 @@ activatedBC = False
 """
 
 performingProof = False
+exception = False
 
 TRUE_RULE = "\n------------\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n%s\n------------\n"
 FALSE_RULE = "\n------------\nThe rule you wrote is False.\n%s\n------------\n"
 RESET = "\n\n********RESETTING THE PROGRAM********\n\n"
+START = "\n\n********STARTING THE PROGRAM********\n\n"
+END_PROOF = "\n\nEND PROOF of %s.\n------------------------------------\n\n\n"
+
 
 # driver.fc('numbers.honores_corazones_new_post(S, 1)')
 def fc():
@@ -28,20 +32,14 @@ def fc():
             # Clean files and engine conclussions
             clean()
 
-            # Measure time of the complete reasoning
-            start_time = time.time()
-            engine.activate('fc_numbers')
-            end_time = time.time()
-            fc_time = end_time - start_time
-
-            print ("FC reasoning time: %.4f seconds, %.0f asserts/sec" % \
-                (fc_time, engine.get_kb('numbers').get_stats()[2] / fc_time))
+            # Run the engine and measure time of the complete FC reasoning
+            runEngine('fc_numbers')
 
             # To run several times the forward-chaining test without
             # executing again the engine complete reasoning
             activatedFC = True
 
-
+        begin()
         engine.print_stats()
 
 
@@ -74,7 +72,7 @@ def fc_proove(rule_to_prove):
         goal = False
         print ("Performing the proof:")
         # Measure time of the proof
-        start_time = time.time()
+        startTime = time.time()
 
 
         with engine.prove_goal(str(rule_to_prove)) \
@@ -91,11 +89,11 @@ def fc_proove(rule_to_prove):
 
 
         # Measure time of the proof
-        end_time = time.time()
-        proof_time = end_time - start_time
+        endTime = time.time()
+        proofTime = endTime - startTime
 
         print ("Proof done.")
-        print ("Proof time: %.4f seconds" % (proof_time))
+        print ("Proof time: %.4f seconds" % (proofTime))
 
     except:
         krb_traceback.print_exc()
@@ -103,25 +101,20 @@ def fc_proove(rule_to_prove):
         #sys.exit(1)
 
 
-# driver.bc('bc_numbers.honores_corazones_new_post(S, 1)')
+# driver.bc('bc_numbers.honores_corazones_new_post(S, 1)', True)
 def bc(rule_to_prove, initialProof):
     try:
         global activatedBC
         global activatedFC
         global performingProof
+        global exception
 
         if activatedFC == False:
             # Clean files and engine conclussions
             clean()
 
-            # Measure time of the complete reasoning
-            start_time = time.time()
-            engine.activate('fc_numbers')       # NECESSARY FOR HAVING ALL THE FACTS
-            end_time = time.time()
-            fc_time = end_time - start_time
-
-            print ("FC reasoning time: %.4f seconds, %.0f asserts/sec" % \
-                (fc_time, engine.get_kb('numbers').get_stats()[2] / fc_time))
+            # Run the engine and measure time of the complete FC reasoning
+            runEngine('fc_numbers')     # NECESSARY FOR COMPLEX PROOFS
 
             # To run several times the forward-chaining test without
             # executing again the engine complete reasoning
@@ -129,14 +122,8 @@ def bc(rule_to_prove, initialProof):
 
         if activatedBC == False:
 
-            # Measure time of the complete reasoning
-            start_time = time.time()
-            engine.activate('bc_numbers')
-            end_time = time.time()
-            bc_time = end_time - start_time
-
-            print ("BC reasoning time: %.6f seconds, %.0f asserts/sec" % \
-                (bc_time, engine.get_kb('numbers').get_stats()[2] / bc_time))
+            # Run the engine and measure time of the complete BC reasoning
+            runEngine('bc_numbers')
             
             # To run several times the forward-chaining test without
             # executing again the engine complete reasoning
@@ -151,13 +138,16 @@ def bc(rule_to_prove, initialProof):
                 print plan
         """
 
+        begin()
         goal = False
-        if (initialProof == True):
+
+        if initialProof == True:
             print ("Performing the proof:")
         else:
             print ("Performing the sub-proof:")
+
         # Measure time of the proof
-        start_time = time.time()
+        startTime = time.time()
 
 
         with engine.prove_goal(str(rule_to_prove)) \
@@ -168,17 +158,17 @@ def bc(rule_to_prove, initialProof):
                 #print gen2
                 goal = True
 
-        if (initialProof == True):
+        if initialProof == True:
             if goal == True:
                 print(TRUE_RULE) % (rule_to_prove)
             else:
                 print(FALSE_RULE) % (rule_to_prove)
                 # Measure time of the proof
-                end_time = time.time()
-                proof_time = end_time - start_time
+                endTime = time.time()
+                proofTime = endTime - startTime
 
                 print ("Proof done.")
-                print ("Proof time: %.4f seconds" % (proof_time))
+                print ("Proof time: %.4f seconds" % (proofTime))
                 return
 
         """
@@ -208,11 +198,18 @@ def bc(rule_to_prove, initialProof):
             print ("SE ACABO WEEEEEEEYYYYYY")
 
             # Measure time of the proof
-            end_time = time.time()
-            proof_time = end_time - start_time
+            endTime = time.time()
+            proofTime = endTime - startTime
 
             print ("Proof done.")
-            print ("Proof time: %.4f seconds" % (proof_time))
+            print ("Proof time: %.4f seconds" % (proofTime))
+
+
+            # Leave some empty space in the conclussions_bc file for
+            # future proofs
+            with open("conclusiones_bc.txt", "a") as f:
+                f.write(END_PROOF % (rule_to_prove))
+
             return
 
         performingProof = True
@@ -229,43 +226,76 @@ def bc(rule_to_prove, initialProof):
         print (midRules)
         # Now, we have to prove those mid rules
         for followRule in midRules:
-            while (performingProof):
+            while performingProof:
                 print ("SE VIENE %s") % (followRule)
                 # We run this rule to follow the reasoning
                 bc(followRule.rstrip("\n"), False)
 
+
         if initialProof == True:
             # Measure time of the proof
-            end_time = time.time()
-            proof_time = end_time - start_time
+            endTime = time.time()
+            proofTime = endTime - startTime
 
-            print ("Proof done.")
-            print ("Proof time: %.4f seconds" % (proof_time))
+            if exception == False:
+                print ("Proof done.")
+                # Leave some empty space in the conclussions_bc file for
+                # future proofs
+                with open("conclusiones_bc.txt", "a") as f:
+                    f.write(END_PROOF % (rule_to_prove))
+            else:
+                print ("Proof done. It's not a complete proof as there was an exception.")
+            print ("Proof time: %.4f seconds" % (proofTime))
 
 
     except:
         krb_traceback.print_exc()
-        clean()
+        cleanException()
         #sys.exit(1)
 
-def clean():
+
+""" -------- AUXILIARY METHODS -------- """
+def begin():
+    print ("\n")
+
+def clean(startOrReset = START):
     global activatedBC
     global activatedFC
     global performingProof
+    global exception
 
-    print (RESET)
+    print (startOrReset)
     engine.reset()
 
     # Clean files
     open("midRules.txt", "w").close()
     open("conclusiones.txt", "w").close()
     open("conclusiones_bc.txt", "w").close()
-    
+
     # Clean global variables
     activatedFC = False
     activatedBC = False
     performingProof = False
+    exception = False
 
+def cleanException():
+    global exception
+    clean(RESET)
+    exception = True
+
+def runEngine(reasoning):
+    # Measure time of the complete reasoning
+    startTime = time.time()
+    engine.activate(reasoning)
+    endTime = time.time()
+    engineTime = endTime - startTime
+
+    if reasoning == 'fc_numbers':
+        reasoningType = "FC"
+    else:
+        reasoningType = "BC"
+    print (reasoningType + " engine time: %.6f seconds, %.0f asserts/sec" % \
+        (engineTime, engine.get_kb('numbers').get_stats()[2] / engineTime))
 
 """
 
