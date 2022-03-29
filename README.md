@@ -3,6 +3,7 @@ Expert System in Python for helping begginer Bridge players to learn the basics 
 
 
 TASKS:
+-	PYKE CON PYTHON3!!! Instalar PyKE v3 en pip3
 -	PROBAR A LEER UN ESTADO DE PARTIDA DE UN .TXT (*partida.txt*) Y CARGARLO EN EL .KFB (conjunto de hechos).
 
 -	QUITAR los prints y CREAR FICHEROS DE LOG para guardar la traza del programa. Así permitimos que se ejecute en el background, lo cual permite montar un *SERVER* donde para cada ejercicio se lance un programa.
@@ -18,3 +19,10 @@ Para cada usuario se lanzaría un proceso en el background del servidor donde se
 -	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* con los .txt de las conclusiones.
 
 -	Probar PREGUNTAS Y RESPUESTAS AL USUARIO.
+
+-	Comentar todos los ficheros con mis datos (correo...)
+
+
+
+
+-	DIFERENCIA ENTRE clean y cleanExcept!!!! Para poner "end proof with exceptions" 

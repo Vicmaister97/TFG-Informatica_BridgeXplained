@@ -7,57 +7,41 @@ import time
 from pyke import knowledge_engine, krb_traceback, goal
 
 engine = knowledge_engine.engine(__file__)
-activated = False       
+activatedFC = False
+activatedBC = False
 """ 
-    Variable "activated" is use for executing backwards chaining several times
-    and only execute forward chaining once.
+    Variable "activated" is use for executing forward or backwards chaining several times
+    and only execute the complete engine reasoning once.
 """
 
+performingProof = False
+
+TRUE_RULE = "\n------------\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n%s\n------------\n"
+FALSE_RULE = "\n------------\nThe rule you wrote is False.\n%s\n------------\n"
+RESET = "\n\n********RESETTING THE PROGRAM********\n\n"
+
 # driver.fc('numbers.honores_corazones_new_post(S, 1)')
-def fc(rule_to_prove):
+def fc():
     try:
-        #global activated
-        #if activated == False:
+        global activatedFC
+        if activatedFC == False:
+            # Clean files and engine conclussions
+            clean()
+
+            # Measure time of the complete reasoning
+            start_time = time.time()
+            engine.activate('fc_numbers')
+            end_time = time.time()
+            fc_time = end_time - start_time
+
+            print ("FC reasoning time: %.4f seconds, %.0f asserts/sec" % \
+                (fc_time, engine.get_kb('numbers').get_stats()[2] / fc_time))
+
             # To run several times the forward-chaining test without
             # executing again the engine complete reasoning
-            # activated = True
-
-        # Clean files and engine conclussions
-        clean()
-
-        # Measure time of the complete reasoning
-        start_time = time.time()
-        engine.activate('fc_numbers')       # NECESSARY FOR HAVING ALL THE FACTS
-        end_time = time.time()
-        fc_time = end_time - start_time
-
-        print ("FC reasoning time: %.2f, %.0f asserts/sec" % \
-            (fc_time, engine.get_kb('numbers').get_stats()[2] / fc_time))
-
-        """
-        with engine.prove_goal('numbers.honores_corazones_FINAL()') \
-          as gen:
-            for vars, plan in gen:
-                print "SE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\n"
-                print plan
-        """
-
-        goal = False
-        print ("doing proof")
-        with engine.prove_goal(str(rule_to_prove)) \
-          as gen2:
-            for vars, plan in gen2:
-                #print "%s tiene %s PH en corazones\n" % (vars['player'], vars['puntos'])
-                #print plan
-                #print gen2
-                goal = True
-        if goal == True:
-            print("\n------------\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n")
-        else:
-            print("\n------------\nThe rule you wrote is False.\n------------\n")
+            activatedFC = True
 
 
-        print ("proof done.")
         engine.print_stats()
 
 
@@ -75,36 +59,24 @@ def fc(rule_to_prove):
         clean()
         #sys.exit(1)
 
-# driver.bc('bc_numbers.honores_corazones_new_post(S, 1)')
-def bc(rule_to_prove):
+def fc_proove(rule_to_prove):
+    fc()
+
     try:
-        """global activated
-        if activated == False:
-            # To run several times the backward-chaining test without
-            # executing again the engine complete reasoning
-            activated = True
         """
-
-        clean()
-
-        # Measure time of the complete reasoning
-        start_time = time.time()
-        engine.activate('fc_numbers')   # NECESSARY FOR HAVING ALL THE FACTS
-        engine.activate('bc_numbers')
-        end_time = time.time()
-        both_time = end_time - start_time
-
-        print ("FC and BC reasoning time: %.2f, %.0f asserts/sec" % \
-            (both_time, engine.get_kb('numbers').get_stats()[2] / both_time))
-
-        """
-        with engine.prove_goal('bc_numbers.honores_corazones_FINAL()') \
+        with engine.prove_goal('numbers.honores_corazones_FINAL()') \
           as gen:
             for vars, plan in gen:
                 print "SE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\n"
                 print plan
         """
+
         goal = False
+        print ("Performing the proof:")
+        # Measure time of the proof
+        start_time = time.time()
+
+
         with engine.prove_goal(str(rule_to_prove)) \
           as gen2:
             for vars, plan in gen2:
@@ -113,9 +85,101 @@ def bc(rule_to_prove):
                 #print gen2
                 goal = True
         if goal == True:
-            print("\n------------\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n")
+            print(TRUE_RULE) % (rule_to_prove)
         else:
-            print("\n------------\nThe rule you wrote is False.\n------------\n")
+            print(FALSE_RULE) % (rule_to_prove)
+
+
+        # Measure time of the proof
+        end_time = time.time()
+        proof_time = end_time - start_time
+
+        print ("Proof done.")
+        print ("Proof time: %.4f seconds" % (proof_time))
+
+    except:
+        krb_traceback.print_exc()
+        clean()
+        #sys.exit(1)
+
+
+# driver.bc('bc_numbers.honores_corazones_new_post(S, 1)')
+def bc(rule_to_prove, initialProof):
+    try:
+        global activatedBC
+        global activatedFC
+        global performingProof
+
+        if activatedFC == False:
+            # Clean files and engine conclussions
+            clean()
+
+            # Measure time of the complete reasoning
+            start_time = time.time()
+            engine.activate('fc_numbers')       # NECESSARY FOR HAVING ALL THE FACTS
+            end_time = time.time()
+            fc_time = end_time - start_time
+
+            print ("FC reasoning time: %.4f seconds, %.0f asserts/sec" % \
+                (fc_time, engine.get_kb('numbers').get_stats()[2] / fc_time))
+
+            # To run several times the forward-chaining test without
+            # executing again the engine complete reasoning
+            activatedFC = True
+
+        if activatedBC == False:
+
+            # Measure time of the complete reasoning
+            start_time = time.time()
+            engine.activate('bc_numbers')
+            end_time = time.time()
+            bc_time = end_time - start_time
+
+            print ("BC reasoning time: %.6f seconds, %.0f asserts/sec" % \
+                (bc_time, engine.get_kb('numbers').get_stats()[2] / bc_time))
+            
+            # To run several times the forward-chaining test without
+            # executing again the engine complete reasoning
+            activatedBC = True
+
+
+        """
+        with engine.prove_goal('bc_numbers.honores_corazones_FINAL()') \
+          as gen:
+            for vars, plan in gen:
+                print "SE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\n"
+                print plan
+        """
+
+        goal = False
+        if (initialProof == True):
+            print ("Performing the proof:")
+        else:
+            print ("Performing the sub-proof:")
+        # Measure time of the proof
+        start_time = time.time()
+
+
+        with engine.prove_goal(str(rule_to_prove)) \
+          as gen2:
+            for vars, plan in gen2:
+                #print "%s tiene %s PH en corazones\n" % (vars['player'], vars['puntos'])
+                #print plan
+                #print gen2
+                goal = True
+
+        if (initialProof == True):
+            if goal == True:
+                print(TRUE_RULE) % (rule_to_prove)
+            else:
+                print(FALSE_RULE) % (rule_to_prove)
+                # Measure time of the proof
+                end_time = time.time()
+                proof_time = end_time - start_time
+
+                print ("Proof done.")
+                print ("Proof time: %.4f seconds" % (proof_time))
+                return
 
         """
             Pyke with backwards chaining only prints the last rule, altough
@@ -140,29 +204,43 @@ def bc(rule_to_prove):
                     # We add the rule
                     midRules.append(line)
 
-        if midRules == False:   # Empty list
+        if not midRules:   # Empty list
             print ("SE ACABO WEEEEEEEYYYYYY")
+
+            # Measure time of the proof
+            end_time = time.time()
+            proof_time = end_time - start_time
+
+            print ("Proof done.")
+            print ("Proof time: %.4f seconds" % (proof_time))
             return
 
+        performingProof = True
         
         # We remove those mid rules from the conclussions file
         # We leave only the final facts
         with open("midRules.txt", "w") as new_f:
             for followRule in midRules:
                 lines.remove(followRule)
+
             # Write only the rules not to prove (final facts)
             new_f.writelines(lines)
-        
+            
         print (midRules)
         # Now, we have to prove those mid rules
         for followRule in midRules:
-            print ("SE VIENE")
-            # We run this rule to follow the reasoning
-            bc(followRule.rstrip("\n"))
+            while (performingProof):
+                print ("SE VIENE %s") % (followRule)
+                # We run this rule to follow the reasoning
+                bc(followRule.rstrip("\n"), False)
 
+        if initialProof == True:
+            # Measure time of the proof
+            end_time = time.time()
+            proof_time = end_time - start_time
 
-        print ("proof done.")
-        engine.print_stats()
+            print ("Proof done.")
+            print ("Proof time: %.4f seconds" % (proof_time))
 
 
     except:
@@ -171,11 +249,22 @@ def bc(rule_to_prove):
         #sys.exit(1)
 
 def clean():
-    print ("\n********RESETTING THE PROGRAM********\n\n")
+    global activatedBC
+    global activatedFC
+    global performingProof
+
+    print (RESET)
     engine.reset()
+
+    # Clean files
     open("midRules.txt", "w").close()
     open("conclusiones.txt", "w").close()
     open("conclusiones_bc.txt", "w").close()
+    
+    # Clean global variables
+    activatedFC = False
+    activatedBC = False
+    performingProof = False
 
 
 """
