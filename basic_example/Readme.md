@@ -18,7 +18,7 @@ python
 """ Usar razonamiento hacia delante (FC -- Forward Chaining) """
 
 >>> driver.fc('rule_to_prove')
-    Ejemplo concreto: >>> driver.fc('numbers.honores_corazones_new_post(S, 1)')
+    **Ejemplo concreto: >>> driver.fc('numbers.honores_corazones_new_post(S, 1)')**
 
 """
 Esto prueba con razonamiento hacia delante que el jugador Sur tiene 1 honor en corazones, algo que solo se puede concluir tras probar todas las demás reglas.
@@ -29,7 +29,7 @@ Puedes probar a demostrar cualquier otra regla definida en el fichero "fc_number
 """ Usar razonamiento hacia atrás (BC -- Backward Chaining) """
 
 >>> driver.bc('rule_to_prove')
-    Ejemplo concreto: >>> driver.bc('bc_numbers.honores_corazones_new_post(S, 1)')
+    **Ejemplo concreto: >>> driver.bc('bc_numbers.honores_corazones_new_post(S, 1)')**
 
 """
 Esto prueba con razonamiento hacia atrás que el jugador Sur tiene 1 honor en corazones, algo que solo se puede concluir tras probar todas las demás reglas.
