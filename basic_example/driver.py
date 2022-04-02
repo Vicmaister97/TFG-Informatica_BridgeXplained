@@ -14,7 +14,7 @@ activatedBC = False
     and only execute the complete engine reasoning once.
 """
 
-performingProof = False
+performingProof = False     # Used for not trying to proove middle rules that we know are true
 exception = False
 
 TRUE_RULE = "\n------------\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n%s\n------------\n"
@@ -54,7 +54,7 @@ def fc():
 
     except:
         krb_traceback.print_exc()
-        clean()
+        cleanException()
         #sys.exit(1)
 
 def fc_proove(rule_to_prove):
@@ -69,6 +69,10 @@ def fc_proove(rule_to_prove):
                 print plan
         """
 
+        """
+        The following proving rule is just to know if the rule is true or false.
+        With FC, we don't get the reasoning.
+        """
         goal = False
         print ("Performing the proof:")
         # Measure time of the proof
@@ -97,12 +101,12 @@ def fc_proove(rule_to_prove):
 
     except:
         krb_traceback.print_exc()
-        clean()
+        cleanException()
         #sys.exit(1)
 
 
 # driver.bc('bc_numbers.honores_corazones_new_post(S, 1)', True)
-def bc(rule_to_prove, initialProof):
+def bc(rule_to_prove, isInitialProof):
     try:
         global activatedBC
         global activatedFC
@@ -138,10 +142,16 @@ def bc(rule_to_prove, initialProof):
                 print plan
         """
 
+        """
+        The following proving rule resolves if the rule is true or false.
+        The main importance of this proving goal is that
+        *** we obtain the reasoning that leds to the proof of this goal***
+        """
         begin()
+        engine.print_stats()
         goal = False
 
-        if initialProof == True:
+        if isInitialProof == True:
             print ("Performing the proof:")
         else:
             print ("Performing the sub-proof:")
@@ -158,7 +168,7 @@ def bc(rule_to_prove, initialProof):
                 #print gen2
                 goal = True
 
-        if initialProof == True:
+        if isInitialProof == True:
             if goal == True:
                 print(TRUE_RULE) % (rule_to_prove)
             else:
@@ -232,7 +242,7 @@ def bc(rule_to_prove, initialProof):
                 bc(followRule.rstrip("\n"), False)
 
 
-        if initialProof == True:
+        if isInitialProof == True:
             # Measure time of the proof
             endTime = time.time()
             proofTime = endTime - startTime

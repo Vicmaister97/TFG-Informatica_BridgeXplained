@@ -2,8 +2,24 @@
 
 # FALLA EL PONER numbers.REGLA dentro de un forall (mas bien dentro de otra regla)
 
+init_classes
+    foreach
+        numbers.init()
+    assert
+        python from Player import *
+        # Vamos a crear los jugadores
+        python N = Player("N")
+        python E = Player("E")
+        python S = Player("S")
+        python O = Player("O")
+        python N.setHC(3)
+        python O.setHC(1)
+        python Player.printHCKnown()
+        numbers.initialized()
+
 sacar_honores_corazones_conocidos
     foreach
+        numbers.initialized()
         numbers.honores_corazones($player, $puntos_min, $puntos_max)
 
         check $puntos_max < 6
@@ -12,6 +28,9 @@ sacar_honores_corazones_conocidos
     assert
         # Escribir en el fichero de conclusiones
         python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos_min)
+
+        # Asignar el atributo al objeto correspondiente
+        python if ($player == "N"): N.setHC(int($puntos_min))
 
         python f = open("conclusiones.txt", "a")
         python f.write(phrase_explained)
