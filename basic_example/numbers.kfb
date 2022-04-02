@@ -1,10 +1,10 @@
 #numbers.kfb
 
-init()
+init_players()
 
-#honores_corazones_conocidos(0)
-#honores_corazones_desconocidos_min(0)
-#honores_corazones(S, 1, 5)
-#honores_corazones(E, 0, 5)
-#honores_corazones(N, 3, 3)
-#honores_corazones(O, 1, 1)
+honores_corazones_conocidos(0)
+honores_corazones_desconocidos_min(0)
+honores_corazones(S, 1, 5)
+honores_corazones(E, 0, 5)
+honores_corazones(N, 3, 3)
+honores_corazones(O, 1, 1)

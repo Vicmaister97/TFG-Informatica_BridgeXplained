@@ -8,7 +8,10 @@ class Player:
 		#self.HC = read_HC_from_conclussions(name)
 
 	def __str__(self):
-		return "Jugador " + self.name + " tiene " + str(self.HC) + " PH en corazones."
+		try:
+			return "Jugador " + self.name + " tiene " + str(self.HC) + " PH en corazones."
+		except AttributeError:
+			return "Aun no sabemos nada del jugador " + self.name + "."
 
 
 	def setHC(self, HC):
@@ -23,4 +26,5 @@ class Player:
 	@classmethod
 	def printHCKnown(cls):
 		print("\nSe conocen en general " + str(Player.HCKnown) + "PH en corazones.")
-		
+
+# python if ($player == "N"): N.setHC(int($puntos_min))

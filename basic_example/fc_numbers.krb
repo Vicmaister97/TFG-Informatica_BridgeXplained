@@ -2,19 +2,20 @@
 
 # FALLA EL PONER numbers.REGLA dentro de un forall (mas bien dentro de otra regla)
 
-init_classes
+init_player
     foreach
-        numbers.init()
+        numbers.init_players()
     assert
-        python from Player import *
+        python from ManagePlayers import *
         # Vamos a crear los jugadores
-        python N = Player("N")
-        python E = Player("E")
-        python S = Player("S")
-        python O = Player("O")
-        python N.setHC(3)
-        python O.setHC(1)
-        python Player.printHCKnown()
+        python global manager
+        python manager = ManagePlayers()
+        python manager.createPlayer("N")
+        python manager.createPlayer("E")
+        python manager.createPlayer("S")
+        python manager.createPlayer("O")
+        python print(manager)
+
         numbers.initialized()
 
 sacar_honores_corazones_conocidos
@@ -29,8 +30,9 @@ sacar_honores_corazones_conocidos
         # Escribir en el fichero de conclusiones
         python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos_min)
 
-        # Asignar el atributo al objeto correspondiente
-        python if ($player == "N"): N.setHC(int($puntos_min))
+        # Asignar los HC al objeto Player correspondiente
+        python global manager
+        python manager.getPlayerFromName($player).setHC(int($puntos_min))
 
         python f = open("conclusiones.txt", "a")
         python f.write(phrase_explained)
@@ -118,9 +120,6 @@ conclusiones_honores_corazones
         check (5-$tot-$tot_min) == 0
 
         # If it gets here, we have conlussions about PH
-
-        #python if($tot < 5) print ("MENOR")
-        #python else print ("MAYOR")
     assert
         # Escribir en el fichero de conclusiones
         python phrase = "\nSE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\nEsto es porque se conocen de seguro %d y como minimo %d, y el total debe ser 5.\n\n" % ($tot, $tot_min)
@@ -144,6 +143,10 @@ cerrar_honores_corazones_desconocidos
     assert
         # Escribir en el fichero de conclusiones
         python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos)
+
+        # Asignar los HC al objeto Player correspondiente
+        python global manager
+        python manager.getPlayerFromName($player).setHC(int($puntos))
         
         python f = open("conclusiones.txt", "a")
         python f.write(phrase_explained)
