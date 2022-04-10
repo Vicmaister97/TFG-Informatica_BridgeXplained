@@ -23,7 +23,9 @@ TASKS:
 
 -	PYKE CON PYTHON3!!! Instalar PyKE v3 en pip3
 
-\n\n
+.
+
+.
 
 ********************** IN PROGRESS **********************
 
@@ -31,9 +33,9 @@ TASKS:
 
 -	Estructura del proyecto: Directorio para clases, otro para ficheros...
 
+.
 
-
-
+.
 
 ********************** SERVER IDEA **********************
 
