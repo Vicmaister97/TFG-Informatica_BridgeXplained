@@ -1,0 +1,13 @@
+El jugador N tiene 3 PH en corazones
+El jugador O tiene 1 PH en corazones
+
+Se conocen 4 PH en corazones
+El jugador S tiene 1 PH en corazones como minimo
+El jugador E tiene 0 PH en corazones como minimo
+Se conocen 1 PH en corazones como minimo
+
+SE CONOCEN TODOS LOS PH EN CORAZONES!!!!!
+Esto es porque se conocen de seguro 4 y como minimo 1, y el total debe ser 5.
+
+El jugador S tiene 1 PH en corazones
+El jugador E tiene 0 PH en corazones

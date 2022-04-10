@@ -6,10 +6,13 @@ init_player
     foreach
         numbers.init_players()
     assert
+        python import sys
+        python sys.path.append("class/")
         python from ManagePlayers import *
         # Vamos a crear los jugadores
         python global manager
         python manager = ManagePlayers()
+        
         python manager.createPlayer("N")
         python manager.createPlayer("E")
         python manager.createPlayer("S")
@@ -34,7 +37,7 @@ sacar_honores_corazones_conocidos
         python global manager
         python manager.getPlayerFromName($player).setHC(int($puntos_min))
 
-        python f = open("conclusiones.txt", "a")
+        python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
         python f.close()
 
@@ -58,7 +61,7 @@ evaluar_honores_corazones_conocidos
         # Escribir en el fichero de conclusiones
         python phrase_explained = "\nSe conocen %d PH en corazones\n" % ($tot)
 
-        python f = open("conclusiones.txt", "a")
+        python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
         python f.close()
 
@@ -78,7 +81,7 @@ sacar_honores_corazones_desconocidos_minimos
         # Escribir en el fichero de conclusiones
         python phrase_explained = "El jugador %s tiene %d PH en corazones como minimo\n" % ($player, $puntos_min)
 
-        python f = open("conclusiones.txt", "a")
+        python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
         python f.close()
 
@@ -101,7 +104,7 @@ evaluar_honores_corazones_desconocidos_minimos
         # Escribir en el fichero de conclusiones
         python phrase_explained = "Se conocen %d PH en corazones como minimo\n" % ($tot_min)
 
-        python f = open("conclusiones.txt", "a")
+        python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
         python f.close()
 
@@ -124,7 +127,7 @@ conclusiones_honores_corazones
         # Escribir en el fichero de conclusiones
         python phrase = "\nSE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\nEsto es porque se conocen de seguro %d y como minimo %d, y el total debe ser 5.\n\n" % ($tot, $tot_min)
 
-        python f = open("conclusiones.txt", "a")
+        python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase)
         python f.close()
 
@@ -148,7 +151,7 @@ cerrar_honores_corazones_desconocidos
         python global manager
         python manager.getPlayerFromName($player).setHC(int($puntos))
         
-        python f = open("conclusiones.txt", "a")
+        python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
         python f.close()
 

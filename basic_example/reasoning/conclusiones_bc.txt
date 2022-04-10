@@ -1,0 +1,8 @@
+El jugador N tiene 3 PH en corazones
+INITIAL_FACT: honores_corazones(N, 3, 3)
+
+
+END PROOF of bc_numbers.honores_corazones_new(N, 3).
+------------------------------------
+
+

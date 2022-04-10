@@ -1,34 +1,48 @@
-# driver.py
+## AUTHOR AND GENERAL VIEW OF THE CODE
+
 
 from __future__ import with_statement
 import sys
 import os
 import time
 from pyke import knowledge_engine, krb_traceback, goal
+sys.path.append("class/")
+from ManagePlayers import *
 
-engine = knowledge_engine.engine(__file__)
-activatedFC = False
-activatedBC = False
-""" 
-    Variable "activated" is use for executing forward or backwards chaining several times
-    and only execute the complete engine reasoning once.
+"""
+######## ######## VARIABLES ######## ########
 """
 
-performingProof = False     # Used for not trying to proove middle rules that we know are true
-exception = False
+engine = knowledge_engine.engine(__file__)
 
-TRUE_RULE = "\n------------\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n%s\n------------\n"
-FALSE_RULE = "\n------------\nThe rule you wrote is False.\n%s\n------------\n"
+""" 
+Variable "activated" is use for executing forward or backwards chaining several times
+    and only execute the complete engine reasoning once.
+"""
+isActiveFC = False
+isActiveBC = False
+
+
+performingProof = False     # Used for not trying to proove middle rules that we know are true
+exception = False           # For exception handling
+
+# USER MESSAGES
+TRUE_RULE = "\n------------\n%s\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n"
+FALSE_RULE = "\n------------\n%s\nThe rule you wrote is False.\n------------\n"
 RESET = "\n\n********RESETTING THE PROGRAM********\n\n"
 START = "\n\n********STARTING THE PROGRAM********\n\n"
 END_PROOF = "\n\nEND PROOF of %s.\n------------------------------------\n\n\n"
 
+# FILES VARIABLES
+F_REASONING = "reasoning/"
+F_MID_RULES = F_REASONING + "midRules.txt"
+F_CONCLUSIONS = F_REASONING + "conclusiones.txt"
+F_CONCLUSIONS_BC = F_REASONING + "conclusiones_bc.txt"
 
-# driver.fc('numbers.honores_corazones_new_post(S, 1)')
 def fc():
     try:
-        global activatedFC
-        if activatedFC == False:
+        global isActiveFC
+        if isActiveFC == False:
             # Clean files and engine conclussions
             clean()
 
@@ -37,11 +51,10 @@ def fc():
 
             # To run several times the forward-chaining test without
             # executing again the engine complete reasoning
-            activatedFC = True
+            isActiveFC = True
+            engine.print_stats()
 
         begin()
-        engine.print_stats()
-
 
         """
         # TRY TO SEE IF WE CAN ACCESS ENGINE RELATIONS
@@ -57,6 +70,8 @@ def fc():
         cleanException()
         #sys.exit(1)
 
+
+# driver.fc_proove('numbers.honores_corazones_new_post(S, 1)')
 def fc_proove(rule_to_prove):
     fc()
 
@@ -108,12 +123,12 @@ def fc_proove(rule_to_prove):
 # driver.bc('bc_numbers.honores_corazones_new_post(S, 1)', True)
 def bc(rule_to_prove, isInitialProof):
     try:
-        global activatedBC
-        global activatedFC
+        global isActiveBC
+        global isActiveFC
         global performingProof
         global exception
 
-        if activatedFC == False:
+        if isActiveFC == False:
             # Clean files and engine conclussions
             clean()
 
@@ -122,16 +137,18 @@ def bc(rule_to_prove, isInitialProof):
 
             # To run several times the forward-chaining test without
             # executing again the engine complete reasoning
-            activatedFC = True
+            isActiveFC = True
 
-        if activatedBC == False:
+        if isActiveBC == False:
 
             # Run the engine and measure time of the complete BC reasoning
             runEngine('bc_numbers')
             
             # To run several times the forward-chaining test without
             # executing again the engine complete reasoning
-            activatedBC = True
+            isActiveBC = True
+            begin()
+            engine.print_stats()
 
 
         """
@@ -144,11 +161,11 @@ def bc(rule_to_prove, isInitialProof):
 
         """
         The following proving rule resolves if the rule is true or false.
+
         The main importance of this proving goal is that
-        *** we obtain the reasoning that leds to the proof of this goal***
+            *** we obtain the reasoning that leds to the proof of this goal ***
         """
         begin()
-        engine.print_stats()
         goal = False
 
         if isInitialProof == True:
@@ -196,7 +213,7 @@ def bc(rule_to_prove, isInitialProof):
             we hit an initial fact.
         """
         midRules = []
-        with open("midRules.txt", "r") as f:
+        with open(F_MID_RULES, "r") as f:
             lines = f.readlines()
             for line in lines:
                 if "bc_numbers" in line:
@@ -217,7 +234,7 @@ def bc(rule_to_prove, isInitialProof):
 
             # Leave some empty space in the conclussions_bc file for
             # future proofs
-            with open("conclusiones_bc.txt", "a") as f:
+            with open(F_CONCLUSIONS_BC, "a") as f:
                 f.write(END_PROOF % (rule_to_prove))
 
             return
@@ -226,7 +243,7 @@ def bc(rule_to_prove, isInitialProof):
         
         # We remove those mid rules from the conclussions file
         # We leave only the final facts
-        with open("midRules.txt", "w") as new_f:
+        with open(F_MID_RULES, "w") as new_f:
             for followRule in midRules:
                 lines.remove(followRule)
 
@@ -251,7 +268,7 @@ def bc(rule_to_prove, isInitialProof):
                 print ("Proof done.")
                 # Leave some empty space in the conclussions_bc file for
                 # future proofs
-                with open("conclusiones_bc.txt", "a") as f:
+                with open(F_CONCLUSIONS_BC, "a") as f:
                     f.write(END_PROOF % (rule_to_prove))
             else:
                 print ("Proof done. It's not a complete proof as there was an exception.")
@@ -268,30 +285,50 @@ def bc(rule_to_prove, isInitialProof):
 def begin():
     print ("\n")
 
-def clean(startOrReset = START):
-    global activatedBC
-    global activatedFC
-    global performingProof
-    global exception
 
-    print (startOrReset)
-    engine.reset()
+def clean():
+    print (START)
 
-    # Clean files
-    open("midRules.txt", "w").close()
-    open("conclusiones.txt", "w").close()
-    open("conclusiones_bc.txt", "w").close()
+    cleanFiles()
 
-    # Clean global variables
-    activatedFC = False
-    activatedBC = False
-    performingProof = False
-    exception = False
+    cleanEngine()
 
 def cleanException():
     global exception
-    clean(RESET)
+
+    print (RESET)
+
+    cleanEngine()
+
+    cleanObjects()
+
+    # Set global variable
     exception = True
+
+def cleanFiles():
+    # Clean files
+    open(F_MID_RULES, "w").close()
+    open(F_CONCLUSIONS, "w").close()
+    open(F_CONCLUSIONS_BC, "w").close()
+
+def cleanEngine():
+    global isActiveBC
+    global isActiveFC
+    global performingProof
+    global exception
+
+    engine.reset()
+
+    # Clean global variables
+    isActiveFC = False
+    isActiveBC = False
+    performingProof = False
+    exception = False
+
+def cleanObjects():
+    manager = ManagePlayers()
+    ManagePlayers.deletePlayers()
+
 
 def runEngine(reasoning):
     # Measure time of the complete reasoning
@@ -301,9 +338,9 @@ def runEngine(reasoning):
     engineTime = endTime - startTime
 
     if reasoning == 'fc_numbers':
-        reasoningType = "FC"
+        reasoningType = "\n\nFC"
     else:
-        reasoningType = "BC"
+        reasoningType = "\n\nBC"
     print (reasoningType + " engine time: %.6f seconds, %.0f asserts/sec" % \
         (engineTime, engine.get_kb('numbers').get_stats()[2] / engineTime))
 
