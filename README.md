@@ -31,6 +31,12 @@ TASKS:
 
 -	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* con los .txt de las conclusiones.
 
+.
+
+.
+
+********************** DONE **********************
+
 -	Estructura del proyecto: Directorio para clases, otro para ficheros...
 
 .
