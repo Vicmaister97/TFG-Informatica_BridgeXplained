@@ -31,6 +31,8 @@ TASKS:
 
 -	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* con los .txt de las conclusiones.
 
+- Lanzar excepciones cuando falla el poblar estas clases para gestionarlas desde driver.py
+
 .
 
 .
