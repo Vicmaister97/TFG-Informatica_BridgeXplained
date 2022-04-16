@@ -33,6 +33,8 @@ TASKS:
 
 - Lanzar excepciones cuando falla el poblar estas clases para gestionarlas desde driver.py
 
+- Escribir los mensajes de error y al usuario en un fichero "sentences.py"
+
 .
 
 .
