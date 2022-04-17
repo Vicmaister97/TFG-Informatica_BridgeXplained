@@ -7,15 +7,19 @@ TASKS:
 
 ********************** TO BE DONE **********************
 
+-	PONER TODOS LOS MÉTODOS DE LOS MANAGER A @classmethod (y no tener que instanciar un objeto)
+
 -	Probar PREGUNTAS Y RESPUESTAS AL USUARIO.
 
 -	PROBAR A LEER UN ESTADO DE PARTIDA DE UN .TXT (*partida.txt*) Y CARGARLO EN EL .KFB (conjunto de hechos).
+
+-	*PONER PRIVADOS LOS ATRIBUTOS!!* Ahora todo es público y accesible...
 
 -	QUITAR los prints y CREAR FICHEROS DE LOG para guardar la traza del programa. Así permitimos que se ejecute en el background, lo cual permite montar un *SERVER* donde para cada ejercicio se lance un programa.
 
 -	conclusiones_fc para guardar la traza de las pruebas que se han pedido demostrar con FC y han sido verdaderas (SOLO SE VA A GUARDAR LA SENTENCIA PROBADA, *NO EL RAZONAMIENTO*)
 
--	**CREAR TESTS!!!!!!**
+-	**CREAR TESTS!!!!!!** Para clases (test unitarios) y para el driver (test integración)
 
 -	Comentar todos los ficheros con mis datos (correo...)
 
@@ -29,11 +33,13 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
--	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* con los .txt de las conclusiones.
+-	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* desde las propias reglas (alternativa: con los .txt de las conclusiones).
+
+-	Probar a quitar Sentences. en todas las frases importadas
 
 - Lanzar excepciones cuando falla el poblar estas clases para gestionarlas desde driver.py
 
-- Escribir los mensajes de error y al usuario en un fichero "sentences.py"
+- Escribir los mensajes al usuario de las clases y del driver en los ficheros "Sentences.py" y "UserSentences.py" correspondientes.
 
 .
 

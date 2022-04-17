@@ -8,6 +8,7 @@ import time
 from pyke import knowledge_engine, krb_traceback, goal
 sys.path.append("class/")
 from ManagePlayers import *
+from ManageTeams import *
 
 """
 ######## ######## VARIABLES ######## ########
@@ -44,7 +45,7 @@ def fc():
         global isActiveFC
         if isActiveFC == False:
             # Clean files and engine conclussions
-            clean()
+            cleanStart()
 
             # Run the engine and measure time of the complete FC reasoning
             runEngine('fc_numbers')
@@ -67,7 +68,7 @@ def fc():
 
     except:
         krb_traceback.print_exc()
-        cleanException()
+        cleanReset()
         #sys.exit(1)
 
 
@@ -116,7 +117,7 @@ def fc_proove(rule_to_prove):
 
     except:
         krb_traceback.print_exc()
-        cleanException()
+        cleanReset()
         #sys.exit(1)
 
 
@@ -130,7 +131,7 @@ def bc(rule_to_prove, isInitialProof):
 
         if isActiveFC == False:
             # Clean files and engine conclussions
-            clean()
+            cleanStart()
 
             # Run the engine and measure time of the complete FC reasoning
             runEngine('fc_numbers')     # NECESSARY FOR COMPLEX PROOFS
@@ -277,7 +278,7 @@ def bc(rule_to_prove, isInitialProof):
 
     except:
         krb_traceback.print_exc()
-        cleanException()
+        cleanReset()
         #sys.exit(1)
 
 
@@ -286,14 +287,16 @@ def begin():
     print ("\n")
 
 
-def clean():
+def cleanStart():
     print (START)
 
+    # In the start we clean previous conclussions files
+    #   and the engine
     cleanFiles()
 
     cleanEngine()
 
-def cleanException():
+def cleanReset():
     global exception
 
     print (RESET)
@@ -326,8 +329,8 @@ def cleanEngine():
     exception = False
 
 def cleanObjects():
-    manager = ManagePlayers()
-    ManagePlayers.deletePlayers()
+    ManagePlayers.delete()
+    ManageTeams.delete()
 
 
 def runEngine(reasoning):

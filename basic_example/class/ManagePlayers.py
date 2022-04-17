@@ -1,37 +1,50 @@
 from Player import *
+from Sentences import *
 
 class ManagePlayers:
 	players = []	# Class variable
 
+	MAX_PLAYERS = 4
+
 	def __str__(self):
 		toString = "Estos son los jugadores: "
-		for player in ManagePlayers.players:
-			toString += player.name + ", "
 		if ManagePlayers.players:
-			return toString[:len(toString)-2] + "."	# To remove the last ", "
+			for player in ManagePlayers.players:
+				toString += "\n" + str(player)
+			return toString
 		else:
 			return "No hay jugadores."
 
 
-	def createPlayer(self, name):
-		player = Player(name)
+	def createPlayer(self, playerName):
+		# Let's check if this player already exists
+		if ManagePlayers.players:
+			player = self.getPlayerFromName(playerName)
+			if player != Sentences.NO_PLAYER_S(playerName):
+				return Sentences.PLAYER_ALREADY_EXISTS_S(playerName)
+		# Check MAX_PLAYERS
+		if len(ManagePlayers.players) >= ManagePlayers.MAX_PLAYERS:
+			return Sentences.MAX_PLAYERS_REACHED
+
+		# Now we create the player
+		player = Player(playerName)
 		ManagePlayers.players.append(player)
 
-
 	
-	@classmethod
-	def getPlayerFromName(cls, name):
+	def getPlayerFromName(cls, playerName):
 		for player in ManagePlayers.players:
-			if player.name == name:
+			if player.name == playerName:
 				return player
+		return Sentences.NO_PLAYER_S(playerName)
+
 
 	@classmethod
-	def deletePlayers(cls):
+	def delete(cls):
 		for player in ManagePlayers.players:
 			player.deletePlayer()
 		ManagePlayers.players = []
-		if Player.HCKnown == 0:
+		if Player.HCGlobal == 0:
 			print("ManagePlayers deleted.")
 		else:
 			print("ManagePlayers deleted, \
-				pero el valor de HCKnown no concuerda.")
+				pero el valor de HCGlobal no concuerda.")

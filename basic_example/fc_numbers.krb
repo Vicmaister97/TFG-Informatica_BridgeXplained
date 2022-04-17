@@ -9,15 +9,26 @@ init_player
         python import sys
         python sys.path.append("class/")
         python from ManagePlayers import *
+        python from ManageTeams import *
+
         # Vamos a crear los jugadores
-        python global manager
-        python manager = ManagePlayers()
+        python global playerManager
+        python global teamManager
+        python playerManager = ManagePlayers()
+        python teamManager = ManageTeams()
+        python teamManager.createTeam("NS")
+        python teamManager.createTeam("EO")
         
-        python manager.createPlayer("N")
-        python manager.createPlayer("E")
-        python manager.createPlayer("S")
-        python manager.createPlayer("O")
-        python print(manager)
+        python playerManager.createPlayer("N")
+        python teamManager.getTeamFromName("NS").addPlayer(playerManager.getPlayerFromName("N"))
+        python playerManager.createPlayer("E")
+        python teamManager.getTeamFromName("EO").addPlayer(playerManager.getPlayerFromName("E"))
+        python playerManager.createPlayer("S")
+        python teamManager.getTeamFromName("NS").addPlayer(playerManager.getPlayerFromName("S"))
+        python playerManager.createPlayer("O")
+        python teamManager.getTeamFromName("EO").addPlayer(playerManager.getPlayerFromName("O"))
+        python print(playerManager)
+        python print(teamManager)
 
         numbers.initialized()
 
@@ -34,8 +45,8 @@ sacar_honores_corazones_conocidos
         python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos_min)
 
         # Asignar los HC al objeto Player correspondiente
-        python global manager
-        python manager.getPlayerFromName($player).setHC(int($puntos_min))
+        python global playerManager
+        python playerManager.getPlayerFromName($player).setHC(int($puntos_min))
 
         python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
@@ -148,8 +159,8 @@ cerrar_honores_corazones_desconocidos
         python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos)
 
         # Asignar los HC al objeto Player correspondiente
-        python global manager
-        python manager.getPlayerFromName($player).setHC(int($puntos))
+        python global playerManager
+        python playerManager.getPlayerFromName($player).setHC(int($puntos))
         
         python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
