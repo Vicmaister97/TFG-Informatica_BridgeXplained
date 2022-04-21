@@ -2,8 +2,11 @@
 
 class Sentences:
 
+	DECORATOR_TREE = "\n*\n*\n**\n***\n*****\n"
 	MAX_PLAYERS_REACHED = "ERROR: MAX_PLAYERS reached."
 	MAX_TEAMS_REACHED = "ERROR: MAX_TEAMS reached."
+
+
 
 	@classmethod
 	def NO_PLAYER_S(self, name):

@@ -7,8 +7,6 @@ TASKS:
 
 ********************** TO BE DONE **********************
 
--	PONER TODOS LOS MÉTODOS DE LOS MANAGER A @classmethod (y no tener que instanciar un objeto)
-
 -	Probar PREGUNTAS Y RESPUESTAS AL USUARIO.
 
 -	PROBAR A LEER UN ESTADO DE PARTIDA DE UN .TXT (*partida.txt*) Y CARGARLO EN EL .KFB (conjunto de hechos).
@@ -33,10 +31,6 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
--	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* desde las propias reglas (alternativa: con los .txt de las conclusiones).
-
--	Probar a quitar Sentences. en todas las frases importadas
-
 - Lanzar excepciones cuando falla el poblar estas clases para gestionarlas desde driver.py
 
 - Escribir los mensajes al usuario de las clases y del driver en los ficheros "Sentences.py" y "UserSentences.py" correspondientes.
@@ -49,11 +43,24 @@ TASKS:
 
 -	Estructura del proyecto: Directorio para clases, otro para ficheros...
 
-.
+-	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* desde las propias reglas (alternativa: con los .txt de las conclusiones).
+
+-	Gestionar accesibilidad (privado vs publico) de los métodos y atributos de las clases MANAGER. Asegurar que podemos obtener información de éstas desde driver.py u cualquier otra parte del código (los objetos se crean desde las reglas).
 
 .
 
-********************** SERVER IDEA **********************
+.
+
+********************** BACKLOG **********************
+
+-	Convertir clases en BEANS, **libreria Pickle SERIALIZAR & Guardar partida!!**
+
+-	Probar a quitar Sentences. en todas las frases importadas
+
+.
+
+*********** SERVER IDEA **************
+
 
 BridgeXplained es un programa de enseñanza básica del Bridge.
 

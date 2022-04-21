@@ -7,8 +7,7 @@ import os
 import time
 from pyke import knowledge_engine, krb_traceback, goal
 sys.path.append("class/")
-from ManagePlayers import *
-from ManageTeams import *
+from ManageGame import *
 
 """
 ######## ######## VARIABLES ######## ########
@@ -49,6 +48,8 @@ def fc():
 
             # Run the engine and measure time of the complete FC reasoning
             runEngine('fc_numbers')
+
+            ManageGame.printGame()
 
             # To run several times the forward-chaining test without
             # executing again the engine complete reasoning
@@ -296,6 +297,7 @@ def cleanStart():
 
     cleanEngine()
 
+
 def cleanReset():
     global exception
 
@@ -303,16 +305,19 @@ def cleanReset():
 
     cleanEngine()
 
-    cleanObjects()
+    # Delete Game info
+    ManageGame.delete()
 
     # Set global variable
     exception = True
+
 
 def cleanFiles():
     # Clean files
     open(F_MID_RULES, "w").close()
     open(F_CONCLUSIONS, "w").close()
     open(F_CONCLUSIONS_BC, "w").close()
+
 
 def cleanEngine():
     global isActiveBC
@@ -328,9 +333,6 @@ def cleanEngine():
     performingProof = False
     exception = False
 
-def cleanObjects():
-    ManagePlayers.delete()
-    ManageTeams.delete()
 
 
 def runEngine(reasoning):
