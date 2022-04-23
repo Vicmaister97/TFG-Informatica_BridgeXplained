@@ -41,7 +41,7 @@ TASKS:
 
 ********************** DONE **********************
 
--	Estructura del proyecto: Directorio para clases, otro para ficheros...
+-	Estructura del proyecto: PACKAGES(+-), directorios para clases...
 
 -	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* desde las propias reglas (alternativa: con los .txt de las conclusiones).
 
