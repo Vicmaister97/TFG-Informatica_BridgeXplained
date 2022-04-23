@@ -1,6 +1,6 @@
 
-
 class Team:
+
 
 	def __init__(self, name):
 
@@ -8,10 +8,10 @@ class Team:
 		self.HC = 0
 		self.players = []
 
-
+	"""
 	def getPlayers(self):
 		return self.players
-
+	"""
 
 	def addPlayer(self, player):
 		self.players.append(player)
@@ -33,7 +33,7 @@ class Team:
 
 
 	def deleteTeam(self):
-		print("Team " + self.name + " deleted.")
+		#print("Team " + self.name + " deleted.")
 		self.players = []
 		del self
 

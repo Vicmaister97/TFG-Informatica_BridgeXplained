@@ -1,9 +1,7 @@
-from ManageTeams import *
 
 class Player:
 
 	HCGlobal = 0		# Honors in Hearts, *class variable*
-
 
 
 	def __init__(self, name):
@@ -11,10 +9,10 @@ class Player:
 		self.HC = 0
 		#self.HC = read_HC_from_conclussions(name)
 
-
+	"""
 	def getHC(self):
 		return self.HC
-
+	"""
 
 	def setHC(self, HC):
 		self.HC = HC

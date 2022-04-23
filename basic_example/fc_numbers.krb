@@ -7,21 +7,21 @@ init_player
         numbers.init_players()
     assert
         python import sys
-        python sys.path.append("class/")
-        python from ManageGame import *
+        python sys.path.append("src/main/modules/game/")
+        python from manageGames import *
 
-        # Vamos a crear los jugadores
-        python global gameManager
-        python gameManager = ManageGame()
-        python gameManager.createTeam("NS")
-        python gameManager.createTeam("EO")
+        # Vamos a crear el juego
+        python global game
+        python game = ManageGames.createGame("Maestros")
+        python game.createTeam("NS")
+        python game.createTeam("EO")
         
-        python gameManager.createPlayer("N", "NS")
-        python gameManager.createPlayer("E", "EO")
-        python gameManager.createPlayer("S", "NS")
-        python gameManager.createPlayer("O", "EO")
+        python game.createPlayer("N", "NS")
+        python game.createPlayer("E", "EO")
+        python game.createPlayer("S", "NS")
+        python game.createPlayer("O", "EO")
 
-        python print(gameManager)
+        python print(game)
 
         numbers.initialized()
 
@@ -38,8 +38,8 @@ sacar_honores_corazones_conocidos
         python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos_min)
 
         # Actualizar los HC de ese jugador
-        python global gameManager
-        python gameManager.setHC($player, int($puntos_min))
+        python global game
+        python game.setHC($player, int($puntos_min))
 
         python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
@@ -152,8 +152,8 @@ cerrar_honores_corazones_desconocidos
         python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos)
 
         # Actualizar los HC de ese jugador
-        python global gameManager
-        python gameManager.setHC($player, int($puntos))
+        python global game
+        python game.setHC($player, int($puntos))
         
         python f = open("reasoning/conclusiones.txt", "a")
         python f.write(phrase_explained)
