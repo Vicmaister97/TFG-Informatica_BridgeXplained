@@ -1,5 +1,10 @@
 from models.player import *
 from helpers.sentences import *
+from helpers.exceptions import *
+import logging
+
+logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
+
 
 class ManagePlayers:
 
@@ -17,27 +22,29 @@ class ManagePlayers:
 
 	def createPlayer(self, playerName):
 		# Let's check if this player already exists
-		playerExists = self.getPlayerFromName(playerName)
-		if playerExists != False:
-			print(Sentences.PLAYER_ALREADY_EXISTS_S(playerName))
-			return False
-		# Check MAX_PLAYERS
-		if len(self.players) >= ManagePlayers.MAX_PLAYERS:
-			print(Sentences.MAX_PLAYERS_REACHED)
-			return False
+		try:
+			playerExists = self.getPlayerFromName(playerName)
+			badResponse = Sentences.PLAYER_ALREADY_EXISTS_S(playerName)
+			logging.error(badResponse)
+			raise PlayerError(badResponse)
 
-		# Now we create the player
-		player = Player(playerName)
-		self.players.append(player)
-		return player
+		except PlayerNotFound:
+			# Check MAX_PLAYERS
+			if len(self.players) >= ManagePlayers.MAX_PLAYERS:
+				print(Sentences.MAX_PLAYERS_REACHED)
+				return False
+
+			# Now we create the player
+			player = Player(playerName)
+			self.players.append(player)
+			return player
 
 
 	def getPlayerFromName(self, playerName):
 		for player in self.players:
 			if player.name == playerName:
 				return player
-		#print(Sentences.NO_PLAYER_S(playerName))
-		return False
+		raise PlayerNotFound(Sentences.NOT_FOUND_PLAYER(playerName))
 
 
 	def __str__(self):

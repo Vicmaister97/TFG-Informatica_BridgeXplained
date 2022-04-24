@@ -21,6 +21,8 @@ init_player
         python game.createPlayer("S", "NS")
         python game.createPlayer("O", "EO")
 
+        python game.createPlayer("O", "EO")
+
         python print(game)
 
         numbers.initialized()

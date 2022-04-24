@@ -22,11 +22,14 @@ class ManageGames:
 		for game in ManageGames.games:
 			if game.name == gameName:
 				return game
+		#print(Sentences.NO_GAME_S(gameName))
 		return False
 
 
+	"""
 	def setHC(self, playerName, points):
 		self.game.setHC(playerName, points)
+	"""
 
 
 	def __str__(self):

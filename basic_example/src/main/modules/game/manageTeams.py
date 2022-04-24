@@ -7,6 +7,7 @@ class ManageTeams:
 
 	MAX_TEAMS = 2
 
+
 	def __init__(self):
 		self.teams = []
 
@@ -27,14 +28,12 @@ class ManageTeams:
 		return True
 
 
-
 	def getTeamFromName(self, teamName):
 		for team in self.teams:
 			if team.name == teamName:
 				return team
 		#print(Sentences.NO_TEAM_S(teamName))
 		return False
-
 
 
 	def getTeamFromPlayer(self, playerName):

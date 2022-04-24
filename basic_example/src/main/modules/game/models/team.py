@@ -1,3 +1,8 @@
+from helpers.sentences import *
+import logging
+
+logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
+
 
 class Team:
 
@@ -7,6 +12,7 @@ class Team:
 		self.name = name
 		self.HC = 0
 		self.players = []
+		logging.info(Sentences.CREATE_TEAM(self.name))
 
 	"""
 	def getPlayers(self):
@@ -29,12 +35,12 @@ class Team:
 				toString += "\n\t" + str(player)
 			return toString
 		except AttributeError:
-			return "Aun no sabemos nada del equipo " + self.name + "."
+			return Sentences.NO_INFO_TEAM(self.name)
 
 
 	def deleteTeam(self):
-		#print("Team " + self.name + " deleted.")
 		self.players = []
+		logging.info(Sentences.DEL_TEAM(self.name))
 		del self
 
 

@@ -1,13 +1,17 @@
+from helpers.sentences import *
+import logging
+
+logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
+
 
 class Player:
-
-	HCGlobal = 0		# Honors in Hearts, *class variable*
 
 
 	def __init__(self, name):
 		self.name = name
 		self.HC = 0
 		#self.HC = read_HC_from_conclussions(name)
+		logging.info(Sentences.CREATE_PLAYER(self.name))
 
 	"""
 	def getHC(self):
@@ -16,25 +20,24 @@ class Player:
 
 	def setHC(self, HC):
 		self.HC = HC
-		Player.HCGlobal += self.HC 							# Update global HC that we know
-
-
-	def deletePlayer(self):
-		Player.HCGlobal -= self.HC
-		#print("Player " + self.name + " deleted.")
-		del self
+	#######
+	## Crear SETTER y atributo en el init segun config!!!
+	## Asi, podemos poner nueva info/atributos de un jugador
+	##	SIN TOCAR ESTE FICHERO!
 
 
 	def __str__(self):
 		try:
 			return "Jugador " + self.name + " tiene " + str(self.HC) + " PH en corazones."
 		except AttributeError:
-			return "Aun no sabemos nada del jugador " + self.name + "."
+			raise 
+			return Sentences.NO_INFO_PLAYER(self.name)
 
 
-	@classmethod
-	def stringHCGlobal(cls):
-		return "\nSe conocen en general " + str(Player.HCGlobal) + "PH en corazones."
+	def deletePlayer(self):
+		logging.info(Sentences.DEL_PLAYER(self.name))
+		del self
+
 
 	#def readHCFromConclussions(player):
 

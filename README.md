@@ -7,17 +7,17 @@ TASKS:
 
 ********************** TO BE DONE **********************
 
+-	**CREAR TESTS!!!!!!** Para clases (test unitarios) y para el driver (test integración)
+
+-	SEPARAR metodos basicos de las clases (Player... metodos create, print...) con los que son CUSTOM DE LAS REGLAS DE LOS QUE QUEREMOS METER como HC !!!!!!!
+
+	SOL: SEPARAR MODELO de SERVICIO!!!!!!!!!!!!!!!!!!
+
 -	Probar PREGUNTAS Y RESPUESTAS AL USUARIO.
-
--	PROBAR A LEER UN ESTADO DE PARTIDA DE UN .TXT (*partida.txt*) Y CARGARLO EN EL .KFB (conjunto de hechos).
-
--	*PONER PRIVADOS LOS ATRIBUTOS!!* Ahora todo es público y accesible...
-
--	QUITAR los prints y CREAR FICHEROS DE LOG para guardar la traza del programa. Así permitimos que se ejecute en el background, lo cual permite montar un *SERVER* donde para cada ejercicio se lance un programa.
 
 -	conclusiones_fc para guardar la traza de las pruebas que se han pedido demostrar con FC y han sido verdaderas (SOLO SE VA A GUARDAR LA SENTENCIA PROBADA, *NO EL RAZONAMIENTO*)
 
--	**CREAR TESTS!!!!!!** Para clases (test unitarios) y para el driver (test integración)
+-	PROBAR A LEER UN ESTADO DE PARTIDA DE UN .TXT (*partida.txt*) Y CARGARLO EN EL .KFB (conjunto de hechos).
 
 -	Comentar todos los ficheros con mis datos (correo...)
 
@@ -25,15 +25,22 @@ TASKS:
 
 -	PYKE CON PYTHON3!!! Instalar PyKE v3 en pip3
 
+-	*PONER PRIVADOS LOS ATRIBUTOS!!* Ahora todo es público y accesible...???
+
 .
 
 .
 
 ********************** IN PROGRESS **********************
 
-- Lanzar excepciones cuando falla el poblar estas clases para gestionarlas desde driver.py
+-	Crear excepciones de las clases creadas. Lanzar excepciones cuando fallan estas clases para gestionarlas desde driver.py.
 
-- Escribir los mensajes al usuario de las clases y del driver en los ficheros "Sentences.py" y "UserSentences.py" correspondientes.
+-	Logging de eventos
+
+
+-	QUITAR los prints y CREAR FICHEROS DE LOG para guardar la traza del programa. Así permitimos que se ejecute en el background, lo cual permite montar un *SERVER* donde para cada ejercicio se lance un programa.
+
+-	Escribir los mensajes al usuario de las clases y del driver en los ficheros "Sentences.py" y "UserSentences.py" correspondientes.
 
 .
 
@@ -45,7 +52,7 @@ TASKS:
 
 -	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* desde las propias reglas (alternativa: con los .txt de las conclusiones).
 
--	Gestionar accesibilidad (privado vs publico) de los métodos y atributos de las clases MANAGER. Asegurar que podemos obtener información de éstas desde driver.py u cualquier otra parte del código (los objetos se crean desde las reglas).
+-	Gestionar accesibilidad (privado vs publico, de clase o instancia) de los métodos y atributos de las clases MANAGER. Asegurar que podemos obtener información de éstas desde driver.py u cualquier otra parte del código (los objetos se crean desde las reglas).
 
 .
 
