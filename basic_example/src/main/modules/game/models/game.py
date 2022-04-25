@@ -36,7 +36,7 @@ class Game:
 
 
 	def stringHCGlobal(self):
-		return "\nSe conocen en general " + str(self.HC) + "PH en corazones."
+		return Sentences.GAME_HC_S(self.HC)
 
 
 	def printHCGlobal(self):

@@ -19,20 +19,17 @@ class ManagePlayers:
 		return self.players
 	"""
 
-
+	# Exceptions: PlayerError
 	def createPlayer(self, playerName):
 		# Let's check if this player already exists
 		try:
 			playerExists = self.getPlayerFromName(playerName)
-			badResponse = Sentences.PLAYER_ALREADY_EXISTS_S(playerName)
-			logging.error(badResponse)
-			raise PlayerError(badResponse)
+			raise PlayerError(Sentences.PLAYER_ALREADY_EXISTS_S(playerName))
 
 		except PlayerNotFound:
 			# Check MAX_PLAYERS
 			if len(self.players) >= ManagePlayers.MAX_PLAYERS:
-				print(Sentences.MAX_PLAYERS_REACHED)
-				return False
+				raise PlayerError(Sentences.MAX_PLAYERS_REACHED)
 
 			# Now we create the player
 			player = Player(playerName)
@@ -48,18 +45,19 @@ class ManagePlayers:
 
 
 	def __str__(self):
-		toString = "Estos son los jugadores: "
+		toString = Sentences.PLAYERS_INFO
 		if self.players:
 			for player in self.players:
 				toString += "\n" + str(player)
-			return toString
 		else:
-			return "No hay jugadores."
+			toString += Sentences.NO_PLAYERS
+
+		return toString
 
 
 	def delete(self):
 		for player in self.players:
 			player.deletePlayer()
 		self.players = []
-		#print("ManagePlayers deleted.")
+		logging.info(Sentences.PLAYER_MANAGER_DELETED)
 		del self

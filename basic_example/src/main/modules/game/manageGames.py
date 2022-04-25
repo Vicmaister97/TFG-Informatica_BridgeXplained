@@ -1,4 +1,11 @@
 from models.game import *
+from helpers.sentences import *
+from helpers.exceptions import *
+
+import logging
+
+logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
+
 
 class ManageGames:
 
@@ -8,13 +15,14 @@ class ManageGames:
 	@classmethod
 	def createGame(cls, gameName):
 		# First, let's check if this game already exists
-		gameExists = ManageGames.getGameFromName(gameName)
-		if gameExists != False:
-			print(Sentences.GAME_ALREADY_EXISTS_S(teamName))
-			return False
-		game = Game(gameName)
-		ManageGames.games.append(game)
-		return game
+		try:
+			gameExists = ManageGames.getGameFromName(gameName)
+			raise GameError(Sentences.GAME_ALREADY_EXISTS_S(gameName))
+
+		except GameNotFound:
+			game = Game(gameName)
+			ManageGames.games.append(game)
+			return game
 
 
 	@classmethod
@@ -22,8 +30,7 @@ class ManageGames:
 		for game in ManageGames.games:
 			if game.name == gameName:
 				return game
-		#print(Sentences.NO_GAME_S(gameName))
-		return False
+		raise GameNotFound(Sentences.NOT_FOUND_GAME_S(gameName))
 
 
 	"""
@@ -33,22 +40,28 @@ class ManageGames:
 
 
 	def __str__(self):
-		toString = Sentences.DECORATOR_TREE_BEGIN + "\n\n---- GAME INFO ----\n\n" \
-		+ str(self.game.teamManager) + Sentences.DECORATOR_TREE_END
+		toString = Sentences.DECORATOR_TREE_BEGIN + Sentences.GAMES_INFO
+		if ManageGames.games:
+			for game in ManageGames.games:
+				toString += str(game)
+		else:
+			toString += Sentences.NO_GAMES
+		
+		toString += "\n\n" + Sentences.DECORATOR_TREE_END
 		return toString
 
 
 	@classmethod
 	def printGames(cls):
+		toString = Sentences.DECORATOR_TREE_BEGIN + Sentences.GAMES_INFO
 		if ManageGames.games:
-			toString = Sentences.DECORATOR_TREE_BEGIN + "\n\n---- GAMES INFO ----\n\n" 
 			for game in ManageGames.games:
 				toString += str(game)
-			toString += "\n\n" + Sentences.DECORATOR_TREE_END
-			print(toString)
 		else:
-			toString = Sentences.NO_GAMES
-			print(toString)
+			toString += Sentences.NO_GAMES
+
+		toString += "\n\n" + Sentences.DECORATOR_TREE_END
+		print(toString)
 
 
 	@classmethod
@@ -56,4 +69,4 @@ class ManageGames:
 		for game in ManageGames.games:
 			game.deleteGame()
 		ManageGames.games = []
-		print("\n---- GAMES DELETED ----\n")
+		logging.info(Sentences.GAMES_DELETED)

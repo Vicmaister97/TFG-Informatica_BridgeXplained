@@ -33,10 +33,6 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
--	Crear excepciones de las clases creadas. Lanzar excepciones cuando fallan estas clases para gestionarlas desde driver.py.
-
--	Logging de eventos
-
 
 -	QUITAR los prints y CREAR FICHEROS DE LOG para guardar la traza del programa. Así permitimos que se ejecute en el background, lo cual permite montar un *SERVER* donde para cada ejercicio se lance un programa.
 
@@ -53,6 +49,10 @@ TASKS:
 -	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* desde las propias reglas (alternativa: con los .txt de las conclusiones).
 
 -	Gestionar accesibilidad (privado vs publico, de clase o instancia) de los métodos y atributos de las clases MANAGER. Asegurar que podemos obtener información de éstas desde driver.py u cualquier otra parte del código (los objetos se crean desde las reglas).
+
+-	Crear excepciones de las clases creadas. Lanzar excepciones cuando fallan estas clases para gestionarlas desde driver.py.
+
+-	Logging de eventos
 
 .
 

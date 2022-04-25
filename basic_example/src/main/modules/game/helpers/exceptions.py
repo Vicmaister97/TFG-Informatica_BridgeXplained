@@ -5,9 +5,21 @@ class Error(Exception):
 class PlayerError(Error):
 	pass
 
-
-class Warning(Exception):
+class TeamError(Error):
 	pass
 
-class PlayerNotFound(Warning):
+class GameError(Error):
+	pass
+
+
+class NotFound(Exception):
+	pass
+
+class PlayerNotFound(NotFound):
+	pass
+
+class TeamNotFound(NotFound):
+	pass
+
+class GameNotFound(NotFound):
 	pass

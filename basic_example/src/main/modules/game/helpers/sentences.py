@@ -8,23 +8,41 @@ class Sentences:
 	MAX_TEAMS_REACHED = "MAX_TEAMS reached."
 
 	NO_GAMES = "Sorry, there are no games available."
+	NO_PLAYERS = "Sorry, there are no players available."
+	NO_TEAMS = "Sorry, there are no teams available."
+
+	TEAM_MANAGER_DELETED = "Team manager deleted."
+	PLAYER_MANAGER_DELETED = "Player manager deleted."
+	
+	PLAYERS_INFO = "\n\n* PLAYERS INFO *\n\n" 
+	TEAMS_INFO = "\n\n-- TEAMS INFO --\n\n" 
+	GAMES_INFO = "\n\n---- GAMES INFO ----\n\n"
+
+	GAMES_DELETED = "\n---- GAMES DELETED ----\n"
+
+
+	###	GAME ATTRIBUTES
+	@classmethod
+	def GAME_HC_S(cls, HC):
+		return "\nWe know " + str(HC) + " PH in Hearts."
 
 	@classmethod
 	def GAME_INFO_S(cls, name):
-		return "\n\n---- GAME " + name + " INFO ----\n\n"
+		return "\n\n---- GAME " + name + " INFO ----\n"
 
 	@classmethod
 	def GAME_INFO_END_S(cls, name):
 		return "\n---- END " + name + " INFO ----\n"
 
 
+	###	EXCEPTION MESSAGES
 	@classmethod
 	def NO_INFO_PLAYER(cls, name):
-		return "\nAun no sabemos nada del jugador " + name + "."
+		return "There is no info about Player " + name + "."
 
 	@classmethod
 	def NO_INFO_TEAM(cls, name):
-		return "Aun no sabemos nada del equipo " + name + "."
+		return "There is no info about Team " + name + "."
 
 
 	@classmethod
@@ -32,12 +50,16 @@ class Sentences:
 		return "Player " + name + " not found."
 
 	@classmethod
-	def NO_TEAM_S(cls, name):
+	def NOT_FOUND_TEAM_S(cls, name):
 		return "Team " + name + " not found."
 
 	@classmethod
-	def NO_GAME_S(cls, name):
+	def NOT_FOUND_GAME_S(cls, name):
 		return "Game " + name + " not found."
+
+	@classmethod
+	def NO_PLAYER_IN_TEAM(cls, name):
+		return "Player " + name + " not found in any team."
 
 
 	@classmethod
@@ -51,11 +73,6 @@ class Sentences:
 	@classmethod
 	def GAME_ALREADY_EXISTS_S(cls, name):
 		return "Game " + name + " was previously created."
-
-
-	@classmethod
-	def NO_PLAYER_IN_TEAM(cls, name):
-		return "Player " + name + " not found in any team."
 
 
 
@@ -75,7 +92,7 @@ class Sentences:
 
 	@classmethod
 	def DEL_PLAYER(cls, name):
-		return "\nPlayer " + name + " deleted."
+		return "Player " + name + " deleted."
 
 	@classmethod
 	def DEL_TEAM(cls, name):
@@ -83,4 +100,4 @@ class Sentences:
 
 	@classmethod
 	def DEL_GAME(cls, name):
-		return "\n---- GAME DELETED ----\n"
+		return "---- GAME " + name + " DELETED ----"
