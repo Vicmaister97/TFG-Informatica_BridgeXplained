@@ -83,7 +83,8 @@ def fc():
 	except NotFound as e:
 		logging.info(e)
 		cleanReset()
-
+	except:
+		cleanReset()
 
 
 
@@ -139,7 +140,7 @@ def fc_proove(rule_to_prove):
 	except NotFound as e:
 		logging.info(e)
 		cleanReset()
-	except Exception:
+	except:
 		cleanReset()
 
 
@@ -312,6 +313,8 @@ def bc(rule_to_prove, isInitialProof):
 		sys.exit(1)
 	except NotFound as e:
 		logging.info(e)
+		cleanReset()
+	except:
 		cleanReset()
 
 
