@@ -12,7 +12,7 @@ class GameError(Error):
 	pass
 
 
-class NotFound(Exception):
+class NotFound(UserWarning):
 	pass
 
 class PlayerNotFound(NotFound):

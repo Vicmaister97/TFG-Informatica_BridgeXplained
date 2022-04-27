@@ -15,7 +15,7 @@ from manageGames import *
 from helpers.exceptions import *
 
 """
-######## ######## VARIABLES ######## ########
+######## ######## GLOBAL VARIABLES ######## ########
 """
 
 engine = knowledge_engine.engine(__file__)
@@ -29,31 +29,34 @@ isActiveBC = False
 
 
 performingProof = False     # Used for not trying to proove middle rules that we know are true
-exception = False           # For exception handling
+startTime = time.time()     # For exception handling
+rule_prooving = "NO RULE"
 
 # USER MESSAGES
 TRUE_RULE = "\n------------\n%s\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n"
 FALSE_RULE = "\n------------\n%s\nThe rule you wrote is False.\n------------\n"
-RESET = "\n\n********RESETTING THE PROGRAM********\n\n"
+RESET_S = "\n\n********RESETTING THE PROGRAM********\n\n"
 START = "\n\n********STARTING THE PROGRAM********\n\n"
 
+PROOF_START = "Performing the proof:"
 END_PROOF = "\n\nEND PROOF of %s.\n------------------------------------\n\n\n"
-PROOF_DONE = "Proof done."
-PROOF_DONE_BAD = "Proof done. It's not a complete proof as there was an exception."
-
+PROOF_DONE = "\tProof done."
+PROOF_DONE_BAD = "\tProof done. It's not a complete proof as there was an exception."
+PROOF_TIME = "\tProof time: %.4f seconds"
 
 # FILES VARIABLES
-F_REASONING = "reasoning/"
-F_MID_RULES = F_REASONING + "midRules.txt"
-F_CONCLUSIONS = F_REASONING + "conclusiones.txt"
-F_CONCLUSIONS_BC = F_REASONING + "conclusiones_bc.txt"
+CONCLUSIONS_DIRECTORY = "conclusions/"
+F_MID_RULES = CONCLUSIONS_DIRECTORY + "midRules.txt"
+F_CONCLUSIONS = CONCLUSIONS_DIRECTORY + "conclusiones.txt"
+F_CONCLUSIONS_BC = CONCLUSIONS_DIRECTORY + "conclusiones_bc.txt"
+F_CONCLUSIONS_FC = CONCLUSIONS_DIRECTORY + "conclusiones_fc.txt"
 
 def fc():
 	try:
 		global isActiveFC
 		if isActiveFC == False:
 			# Clean files and engine conclussions
-			cleanStart()
+			START_CLEAN()
 
 			# Run the engine and measure time of the complete FC reasoning
 			runEngine('fc_numbers')
@@ -76,15 +79,15 @@ def fc():
 		for conclussion in list_of_conclussions
 		"""
 
-	except Error as e:
+
+	except Exception as e:
 		logging.error(e)
-		cleanReset()
-		sys.exit(1)
+		RESET()
+		#sys.exit(1)
 	except NotFound as e:
-		logging.info(e)
-		cleanReset()
-	except:
-		cleanReset()
+		logging.warning(e)
+		RESET()
+
 
 
 
@@ -93,6 +96,9 @@ def fc_proove(rule_to_prove):
 	fc()
 
 	try:
+		global startTime
+		global rule_prooving
+		rule_prooving = rule_to_prove
 		"""
 		with engine.prove_goal('numbers.honores_corazones_FINAL()') \
 		  as gen:
@@ -106,7 +112,8 @@ def fc_proove(rule_to_prove):
 		With FC, we don't get the reasoning.
 		"""
 		goal = False
-		print ("Performing the proof:")
+		print(PROOF_START)
+		logging.debug(PROOF_START)
 		# Measure time of the proof
 		startTime = time.time()
 
@@ -119,9 +126,9 @@ def fc_proove(rule_to_prove):
 				#print gen2
 				goal = True
 		if goal == True:
-			print(TRUE_RULE) % (rule_to_prove)
+			logTrueRule(rule_to_prove, F_CONCLUSIONS_FC)
 		else:
-			print(FALSE_RULE) % (rule_to_prove)
+			logFalseRule(rule_to_prove, F_CONCLUSIONS_FC)
 
 
 		# Measure time of the proof
@@ -129,19 +136,17 @@ def fc_proove(rule_to_prove):
 		proofTime = endTime - startTime
 
 		# Logging
-		print(PROOF_DONE)
-		logging.info(PROOF_DONE)
-		print ("Proof time: %.4f seconds" % (proofTime))
+		logProofDone(rule_to_prove, proofTime, F_CONCLUSIONS_FC)
 
-	except Error as e:
+
+	except Exception as e:
 		logging.error(e)
-		cleanReset()
-		sys.exit(1)
+		RESET_PROOF(F_CONCLUSIONS_FC)
+		#sys.exit(1)
 	except NotFound as e:
-		logging.info(e)
-		cleanReset()
-	except:
-		cleanReset()
+		logging.warning(e)
+		RESET_PROOF(F_CONCLUSIONS_FC)
+
 
 
 # driver.bc('bc_numbers.honores_corazones_new_post(S, 1)', True)
@@ -150,11 +155,13 @@ def bc(rule_to_prove, isInitialProof):
 		global isActiveBC
 		global isActiveFC
 		global performingProof
-		global exception
+		global startTime
+		global rule_prooving
+
 
 		if isActiveFC == False:
 			# Clean files and engine conclussions
-			cleanStart()
+			START_CLEAN()
 
 			# Run the engine and measure time of the complete FC reasoning
 			runEngine('fc_numbers')     # NECESSARY FOR COMPLEX PROOFS
@@ -194,6 +201,7 @@ def bc(rule_to_prove, isInitialProof):
 
 		if isInitialProof == True:
 			print ("Performing the proof:")
+			rule_prooving = rule_to_prove
 		else:
 			print ("Performing the sub-proof:")
 
@@ -211,17 +219,15 @@ def bc(rule_to_prove, isInitialProof):
 
 		if isInitialProof == True:
 			if goal == True:
-				print(TRUE_RULE) % (rule_to_prove)
+				logTrueRule(rule_to_prove, F_CONCLUSIONS_BC)
 			else:
-				print(FALSE_RULE) % (rule_to_prove)
+				logFalseRule(rule_to_prove, F_CONCLUSIONS_BC)
 				# Measure time of the proof
 				endTime = time.time()
 				proofTime = endTime - startTime
 
 				# Logging
-				print(PROOF_DONE)
-				logging.info(PROOF_DONE)
-				print ("Proof time: %.4f seconds" % (proofTime))
+				logProofDone(rule_to_prove, proofTime, F_CONCLUSIONS_BC)
 				return
 
 		"""
@@ -255,16 +261,7 @@ def bc(rule_to_prove, isInitialProof):
 			proofTime = endTime - startTime
 
 			# Logging
-			print(PROOF_DONE)
-			logging.info(PROOF_DONE)
-			print ("Proof time: %.4f seconds" % (proofTime))
-
-
-			# Leave some empty space in the conclussions_bc file for
-			# future proofs
-			with open(F_CONCLUSIONS_BC, "a") as f:
-				f.write(END_PROOF % (rule_to_prove))
-
+			logProofDone(rule_to_prove, proofTime, F_CONCLUSIONS_BC)
 			return
 
 		performingProof = True
@@ -292,45 +289,75 @@ def bc(rule_to_prove, isInitialProof):
 			endTime = time.time()
 			proofTime = endTime - startTime
 
-			if exception == False:
-				# Logging
-				print(PROOF_DONE)
-				logging.info(PROOF_DONE)
-
-				# Leave some empty space in the conclussions_bc file for
-				# future proofs
-				with open(F_CONCLUSIONS_BC, "a") as f:
-					f.write(END_PROOF % (rule_to_prove))
-			else:
-				print(PROOF_DONE_BAD)
-				logging.info(PROOF_DONE_BAD)
-			print("Proof time: %.4f seconds" % (proofTime))
+			# Logging
+			logProofDone(rule_to_prove, proofTime, F_CONCLUSIONS_BC)
 
 
-	except Error as e:
+	except Exception as e:
 		logging.error(e)
-		cleanReset()
-		sys.exit(1)
+		RESET_PROOF(F_CONCLUSIONS_BC)
+		#sys.exit(1)
+
 	except NotFound as e:
-		logging.info(e)
-		cleanReset()
-	except:
-		cleanReset()
+		logging.warning(e)
+		RESET_PROOF(F_CONCLUSIONS_BC)
 
 
 """ -------- AUXILIARY METHODS -------- """
-# Delete Game info
-def cleanGame():
-	ManageGames.delete()
+
+####	LOGGING
+def printAndLog(sentence):
+	print(sentence)
+	logging.debug(sentence)
+
+def logTrueRule(rule_to_prove, file):
+	################ PROBAR printAndLog !!!!!!!!
+	print(TRUE_RULE) % (rule_to_prove)
+	logging.info(TRUE_RULE % (rule_to_prove))
+	with open(file, "a") as f:
+		f.write(TRUE_RULE % (rule_to_prove))
+
+def logFalseRule(rule_to_prove, file):
+	print(FALSE_RULE) % (rule_to_prove)
+	logging.info(FALSE_RULE % (rule_to_prove))
+	with open(file, "a") as f:
+		f.write(FALSE_RULE % (rule_to_prove))
+
+
+def logProofDone(rule_to_prove, proofTime, file):
+	printAndLog(PROOF_DONE)
+	logProofTime(proofTime)
+	logProofEND(file)
+
+def logProofDoneBad(proofTime, file):
+	printAndLog(PROOF_DONE_BAD)
+	logProofTime(proofTime)
+	logProofEND(file)
+
+
+def logProofTime(proofTime):
+	print(PROOF_TIME) % (proofTime)
+	logging.debug(PROOF_TIME % (proofTime))
+
+def logProofEND(file):
+	global rule_prooving
+	logging.debug(END_PROOF % (rule_prooving))
+	# Leave some empty space in the conclussions_bc file for
+	# future proofs
+	with open(file, "a") as f:
+		f.write(END_PROOF % (rule_prooving))
+
+
+####	MANAGE PROGRAM
 
 def begin():
 	print("\n")
-	logging.info("\n")
+	logging.debug("\n")
 
 
-def cleanStart():
+def START_CLEAN():
 	print(START)
-	logging.info(START)
+	logging.debug(START)
 
 	# In the start we clean previous conclussions files
 	#   and the engine
@@ -339,25 +366,33 @@ def cleanStart():
 	cleanEngine()
 
 
-def cleanReset():
-	global exception
+def RESET():
 	krb_traceback.print_exc()
+	#logging.debug(krb_traceback)
 
-	print(RESET)
-	logging.info(RESET)
+	print(RESET_S)
+	logging.debug(RESET_S)
 
 	cleanEngine()
 
 	cleanGame()
 
-	# Set global variable
-	exception = True
+
+def RESET_PROOF(file):
+	global startTime
+	global rule_to_prove
+	# Measure time of the proof
+	endTime = time.time()
+	proofTime = endTime - startTime
+	logProofDoneBad(proofTime, file)
+	RESET()
 
 
 def cleanFiles():
 	# Clean files
 	open(F_MID_RULES, "w").close()
 	open(F_CONCLUSIONS, "w").close()
+	open(F_CONCLUSIONS_FC, "w").close()
 	open(F_CONCLUSIONS_BC, "w").close()
 
 
@@ -365,7 +400,6 @@ def cleanEngine():
 	global isActiveBC
 	global isActiveFC
 	global performingProof
-	global exception
 
 	engine.reset()
 
@@ -373,8 +407,11 @@ def cleanEngine():
 	isActiveFC = False
 	isActiveBC = False
 	performingProof = False
-	exception = False
 
+
+# Delete Game debug
+def cleanGame():
+	ManageGames.delete()
 
 
 def runEngine(reasoning):

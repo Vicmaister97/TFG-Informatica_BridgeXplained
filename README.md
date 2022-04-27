@@ -6,6 +6,8 @@ TASKS:
 
 
 ********************** TO BE DONE **********************
+-	**REGLAS EJERCICIO 1 BRIDGE**
+
 
 -	**CREAR TESTS!!!!!!** Para clases (test unitarios) y para el driver (test integración)
 
@@ -13,7 +15,7 @@ TASKS:
 
 	SOL: SEPARAR MODELO de SERVICIO!!!!!!!!!!!!!!!!!!
 
--	Probar PREGUNTAS Y RESPUESTAS AL USUARIO.
+-	Probar PREGUNTAS Y RESPUESTAS AL USUARIO
 
 -	conclusiones_fc para guardar la traza de las pruebas que se han pedido demostrar con FC y han sido verdaderas (SOLO SE VA A GUARDAR LA SENTENCIA PROBADA, *NO EL RAZONAMIENTO*)
 
@@ -33,10 +35,12 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
+-	Logging PONER HORA Y DIA DE STARTING PROGRAM!!
 
--	QUITAR los prints y CREAR FICHEROS DE LOG para guardar la traza del programa. Así permitimos que se ejecute en el background, lo cual permite montar un *SERVER* donde para cada ejercicio se lance un programa.
 
--	Escribir los mensajes al usuario de las clases y del driver en los ficheros "Sentences.py" y "UserSentences.py" correspondientes.
+-	LOGGING para guardar la traza del programa y las reglas probadas. Esto permite que se pueda ejecutar en el background (lo cual permite montar un *SERVER/App web*), depurar errores, entender el comportamiento del motor, extraer las reglas probadas...
+
+-	Escribir los mensajes de logs de las clases y del motor de inferencia en los ficheros "Sentences.py" y "UserSentences.py" correspondientes.
 
 .
 
@@ -52,7 +56,11 @@ TASKS:
 
 -	Crear excepciones de las clases creadas. Lanzar excepciones cuando fallan estas clases para gestionarlas desde driver.py.
 
--	Logging de eventos
+-	Logging de eventos de clases y del motor de inferencia
+
+-	Logging de las reglas que se piden probar junto con la conclusion (si son verdaderas o falsas)
+
+-	Logging debug para la traza normal. Logging info para las conclusiones de si una regla introducida es verdadera o falsa. Logging error y warning para la gestion de excepciones.
 
 .
 

@@ -18,13 +18,13 @@ class Sentences:
 	TEAMS_INFO = "\n\n-- TEAMS INFO --\n\n" 
 	GAMES_INFO = "\n\n---- GAMES INFO ----\n\n"
 
-	GAMES_DELETED = "\n---- GAMES DELETED ----\n"
+	GAMES_DELETED = "---- GAMES DELETED ----\n"
 
 
 	###	GAME ATTRIBUTES
 	@classmethod
 	def GAME_HC_S(cls, HC):
-		return "\nWe know " + str(HC) + " PH in Hearts."
+		return "\nSe conocen " + str(HC) + " PH en Corazones."
 
 	@classmethod
 	def GAME_INFO_S(cls, name):
