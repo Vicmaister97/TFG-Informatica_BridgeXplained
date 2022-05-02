@@ -6,6 +6,7 @@ import os
 import time
 import logging
 from pyke import knowledge_engine, krb_traceback, goal
+from datetime import datetime
 
 logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
 
@@ -36,10 +37,16 @@ rule_prooving = "NO RULE"
 TRUE_RULE = "\n------------\n%s\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n"
 FALSE_RULE = "\n------------\n%s\nThe rule you wrote is False.\n------------\n"
 RESET_S = "\n\n********RESETTING THE PROGRAM********\n\n"
-START = "\n\n********STARTING THE PROGRAM********\n\n"
+START = "\n\n********STARTING THE PROGRAM********\n%s\n\n"
 
-PROOF_START = "Performing the proof:"
-END_PROOF = "\n\nEND PROOF of %s.\n------------------------------------\n\n\n"
+PROOF_BEGIN_DECORATOR = "\n\n\n------------------------------------\n"
+PROOF_END_DECORATOR = "\n------------------------------------\n\n\n"
+
+
+PROOF_BEGIN = PROOF_BEGIN_DECORATOR + "\n\nBEGIN PROOF of %s.\n\n"
+PROOF_START = "\n\nPerforming the proof of %s:"
+SUBPROOF_START = "\nPerforming the sub-proof (%s):"
+PROOF_END = "\n\nEND PROOF of %s." + PROOF_END_DECORATOR
 PROOF_DONE = "\tProof done."
 PROOF_DONE_BAD = "\tProof done. It's not a complete proof as there was an exception."
 PROOF_TIME = "\tProof time: %.4f seconds"
@@ -67,8 +74,6 @@ def fc():
 			# executing again the engine complete reasoning
 			isActiveFC = True
 			engine.print_stats()
-
-		begin()
 
 		"""
 		# TRY TO SEE IF WE CAN ACCESS ENGINE RELATIONS
@@ -112,8 +117,8 @@ def fc_proove(rule_to_prove):
 		With FC, we don't get the reasoning.
 		"""
 		goal = False
-		print(PROOF_START)
-		logging.debug(PROOF_START)
+		logProofBEGIN(F_CONCLUSIONS_FC)
+		printAndLog(PROOF_START % rule_prooving)
 		# Measure time of the proof
 		startTime = time.time()
 
@@ -178,7 +183,6 @@ def bc(rule_to_prove, isInitialProof):
 			# To run several times the forward-chaining test without
 			# executing again the engine complete reasoning
 			isActiveBC = True
-			begin()
 			engine.print_stats()
 
 
@@ -196,14 +200,14 @@ def bc(rule_to_prove, isInitialProof):
 		The main importance of this proving goal is that
 			*** we obtain the reasoning that leds to the proof of this goal ***
 		"""
-		begin()
+		logProofBEGIN(F_CONCLUSIONS_BC)
 		goal = False
 
 		if isInitialProof == True:
-			print ("Performing the proof:")
 			rule_prooving = rule_to_prove
+			printAndLog(PROOF_START % rule_prooving)
 		else:
-			print ("Performing the sub-proof:")
+			printAndLog(SUBPROOF_START % rule_to_prove)
 
 		# Measure time of the proof
 		startTime = time.time()
@@ -310,16 +314,21 @@ def printAndLog(sentence):
 	print(sentence)
 	logging.debug(sentence)
 
+def printAndLogInfo(sentence):
+	print(sentence)
+	logging.info(sentence)
+
+def printAndLogWarning(sentence):
+	print(sentence)
+	logging.warning(sentence)
+
 def logTrueRule(rule_to_prove, file):
-	################ PROBAR printAndLog !!!!!!!!
-	print(TRUE_RULE) % (rule_to_prove)
-	logging.info(TRUE_RULE % (rule_to_prove))
+	printAndLogInfo(TRUE_RULE % (rule_to_prove))
 	with open(file, "a") as f:
 		f.write(TRUE_RULE % (rule_to_prove))
 
 def logFalseRule(rule_to_prove, file):
-	print(FALSE_RULE) % (rule_to_prove)
-	logging.info(FALSE_RULE % (rule_to_prove))
+	printAndLogInfo(FALSE_RULE % (rule_to_prove))
 	with open(file, "a") as f:
 		f.write(FALSE_RULE % (rule_to_prove))
 
@@ -330,34 +339,36 @@ def logProofDone(rule_to_prove, proofTime, file):
 	logProofEND(file)
 
 def logProofDoneBad(proofTime, file):
-	printAndLog(PROOF_DONE_BAD)
+	printAndLogWarning(PROOF_DONE_BAD)
 	logProofTime(proofTime)
 	logProofEND(file)
 
 
 def logProofTime(proofTime):
-	print(PROOF_TIME) % (proofTime)
-	logging.debug(PROOF_TIME % (proofTime))
+	printAndLog(PROOF_TIME % (proofTime))
+
+def logProofBEGIN(file):
+	global rule_prooving
+	printAndLog(PROOF_BEGIN % (rule_prooving))
+	with open(file, "a") as f:
+		f.write(PROOF_BEGIN % (rule_prooving))
 
 def logProofEND(file):
 	global rule_prooving
-	logging.debug(END_PROOF % (rule_prooving))
+	printAndLog(PROOF_END % (rule_prooving))
 	# Leave some empty space in the conclussions_bc file for
 	# future proofs
 	with open(file, "a") as f:
-		f.write(END_PROOF % (rule_prooving))
+		f.write(PROOF_END % (rule_prooving))
 
 
 ####	MANAGE PROGRAM
 
-def begin():
-	print("\n")
-	logging.debug("\n")
-
-
 def START_CLEAN():
-	print(START)
-	logging.debug(START)
+	now = datetime.now()
+	nowStr = now.strftime("%d/%m/%Y %H:%M:%S")
+	print(START) % nowStr
+	logging.debug(START % nowStr)
 
 	# In the start we clean previous conclussions files
 	#   and the engine

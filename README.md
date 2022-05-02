@@ -11,6 +11,10 @@ TASKS:
 
 -	**CREAR TESTS!!!!!!** Para clases (test unitarios) y para el driver (test integración)
 
+-	*conclusiones_fc* MEJORAR que solo se pongan las reglas verdaderas y falsas (minimo todo casi rollo lista, NO rollo log de begin y end).
+
+	- Darle una vuelta a bc (2, uno como esta con el razonamiento y otro rollo fc lista)
+
 -	SEPARAR metodos basicos de las clases (Player... metodos create, print...) con los que son CUSTOM DE LAS REGLAS DE LOS QUE QUEREMOS METER como HC !!!!!!!
 
 	SOL: SEPARAR MODELO de SERVICIO!!!!!!!!!!!!!!!!!!
@@ -35,10 +39,10 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
--	Logging PONER HORA Y DIA DE STARTING PROGRAM!!
+-	Arreglar forall de backwards chaining
 
+-	Logging engine stats
 
--	LOGGING para guardar la traza del programa y las reglas probadas. Esto permite que se pueda ejecutar en el background (lo cual permite montar un *SERVER/App web*), depurar errores, entender el comportamiento del motor, extraer las reglas probadas...
 
 -	Escribir los mensajes de logs de las clases y del motor de inferencia en los ficheros "Sentences.py" y "UserSentences.py" correspondientes.
 
@@ -56,11 +60,15 @@ TASKS:
 
 -	Crear excepciones de las clases creadas. Lanzar excepciones cuando fallan estas clases para gestionarlas desde driver.py.
 
--	Logging de eventos de clases y del motor de inferencia
+-	LOGGING para guardar la traza del programa y las reglas probadas. Esto permite que se pueda ejecutar en el background (lo cual permite montar un *SERVER/App web*), depurar errores, entender el comportamiento del motor, extraer las reglas probadas...
 
--	Logging de las reglas que se piden probar junto con la conclusion (si son verdaderas o falsas)
+	-	Logging de eventos de clases y del motor de inferencia
 
--	Logging debug para la traza normal. Logging info para las conclusiones de si una regla introducida es verdadera o falsa. Logging error y warning para la gestion de excepciones.
+	-	Logging de las reglas que se piden probar junto con la conclusion (si son verdaderas o falsas)
+
+	-	Logging debug para la traza normal. Logging info para las conclusiones de si una regla introducida es verdadera o falsa. Logging error y warning para la gestion de excepciones.
+
+	-	Logging PONER HORA Y DIA DE STARTING PROGRAM!!
 
 .
 

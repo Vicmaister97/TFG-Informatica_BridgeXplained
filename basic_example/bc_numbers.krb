@@ -12,7 +12,7 @@ sacar_honores_corazones_conocidos
 	python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos_min)
 	python rule1 = "INITIAL_FACT: honores_corazones(%s, %s, %s)\n" % ($player, $puntos_min, $puntos_max)
 
-	python f = open("reasoning/conclusiones_bc.txt", "a")
+	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python f.write(phrase_explained)
 	python f.write(rule1)
 	python f.close()
@@ -28,7 +28,7 @@ evaluar_honores_corazones_conocidos
 		numbers.honores_corazones_new($player, $puntos)
 		python tot = tot + $puntos
 
-		python midRules = open("reasoning/midRules.txt", "a")
+		python midRules = open("conclusions/midRules.txt", "a")
 		python rule = "bc_numbers.honores_corazones_new(%s, %s)\n" % ($player, $puntos)
 		python midRules.write(rule)
 		python midRules.close()
@@ -39,7 +39,7 @@ evaluar_honores_corazones_conocidos
 	# Escribir en el fichero de conclusiones
 	python phrase_explained = "\nSe conocen %d PH en corazones\n" % ($tot)
 
-	python f = open("reasoning/conclusiones_bc.txt", "a")
+	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python f.write(phrase_explained)
 	python f.close()
 
@@ -57,7 +57,7 @@ sacar_honores_corazones_desconocidos_minimos
 	python phrase_explained = "El jugador %s tiene %d PH en corazones como minimo\n" % ($player, $puntos_min)
 	python rule1 = "INITIAL_FACT: honores_corazones(%s, %s, %s)\n" % ($player, $puntos_min, $puntos_max)
 
-	python f = open("reasoning/conclusiones_bc.txt", "a")
+	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python f.write(phrase_explained)
 	python f.write(rule1)
 	python f.close()
@@ -68,7 +68,7 @@ evaluar_honores_corazones_desconocidos_minimos
     when
 	numbers.honores_corazones_desconocidos_min($known)
 	python tot_min = 0
-	python midRules = open("reasoning/midRules.txt", "a")
+	python midRules = open("conclusions/midRules.txt", "a")
 
 	forall
 		numbers.honores_corazones_min($player, $puntos)
@@ -82,7 +82,7 @@ evaluar_honores_corazones_desconocidos_minimos
 	# Escribir en el fichero de conclusiones
 	python phrase_explained = "Se conocen %d PH en corazones como minimo\n" % ($tot_min)
 
-	python f = open("reasoning/conclusiones_bc.txt", "a")
+	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python f.write(phrase_explained)
 	python f.close()
 	python midRules.close()
@@ -103,8 +103,8 @@ conclusiones_honores_corazones
 	python rule1 = "bc_numbers.honores_corazones_conocidos_new(%s)\n" % ($tot)
 	python rule2 = "bc_numbers.honores_corazones_desconocidos_min_new(%s)\n" % ($tot_min)
 
-	python f = open("reasoning/conclusiones_bc.txt", "a")
-	python midRules = open("reasoning/midRules.txt", "a")
+	python f = open("conclusions/conclusiones_bc.txt", "a")
+	python midRules = open("conclusions/midRules.txt", "a")
 	python f.write(phrase)
 	python midRules.write(rule1)
 	python midRules.write(rule2)
@@ -129,8 +129,8 @@ cerrar_honores_corazones_desconocidos
 	python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos)
 	python rule1 = "bc_numbers.honores_corazones_min(%s, %s)\n" % ($player, $puntos)
         
-	python f = open("reasoning/conclusiones_bc.txt", "a")
-	python midRules = open("reasoning/midRules.txt", "a")
+	python f = open("conclusions/conclusiones_bc.txt", "a")
+	python midRules = open("conclusions/midRules.txt", "a")
 	python f.write(phrase_explained)
 	python midRules.write(rule1)
 	python midRules.write("bc_numbers.honores_corazones_FINAL()\n")
