@@ -1,5 +1,7 @@
 # TFG-Informatica_BridgeXplained
-Expert System in Python for helping begginer Bridge players to learn the basics of this card game. It gives the learner all the information, **along with its corresponding reasoning**, that can be obtained from the previous moves. It also poses questions to the user about what information or action can be known from the previous moves.
+Expert System in Python for helping begginer Bridge players to learn the basics of this card game. Among with our knowledge-based inference engine built with PyKe (http://pyke.sourceforge.net/), it gives the learner all the information, **along with its corresponding reasoning**, that can be obtained from the current game status.
+
+Possible feature: It allows to pose questions to the user (some kind of chat), for example about what information can be known from the previous moves and which is the best action (according to our inference engine).
 
 
 TASKS:
