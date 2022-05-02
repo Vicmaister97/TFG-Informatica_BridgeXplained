@@ -1,8 +1,6 @@
 from helpers.sentences import *
 import logging
 
-logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
-
 
 class Player:
 
@@ -11,7 +9,7 @@ class Player:
 		self.name = name
 		self.HC = 0
 		#self.HC = read_HC_from_conclussions(name)
-		logging.info(Sentences.CREATE_PLAYER(self.name))
+		logging.debug(Sentences.CREATE_PLAYER(self.name))
 
 	"""
 	def getHC(self):
@@ -28,14 +26,14 @@ class Player:
 
 	def __str__(self):
 		try:
-			return "Jugador " + self.name + " tiene " + str(self.HC) + " PH en corazones."
+			return "Jugador " + self.name + " tiene " + str(self.HC) + " Honores en corazones."
 		except AttributeError:
 			raise 
 			return Sentences.NO_INFO_PLAYER(self.name)
 
 
 	def deletePlayer(self):
-		logging.info(Sentences.DEL_PLAYER(self.name))
+		logging.debug(Sentences.DEL_PLAYER(self.name))
 		del self
 
 

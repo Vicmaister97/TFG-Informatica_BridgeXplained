@@ -4,8 +4,6 @@ from helpers.exceptions import *
 
 import logging
 
-logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
-
 
 class ManageGames:
 
@@ -69,4 +67,4 @@ class ManageGames:
 		for game in ManageGames.games:
 			game.deleteGame()
 		ManageGames.games = []
-		logging.info(Sentences.GAMES_DELETED)
+		logging.debug(Sentences.GAMES_DELETED)

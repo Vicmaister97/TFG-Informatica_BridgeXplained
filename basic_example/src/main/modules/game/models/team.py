@@ -1,8 +1,6 @@
 from helpers.sentences import *
 import logging
 
-logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
-
 
 class Team:
 
@@ -12,7 +10,7 @@ class Team:
 		self.name = name
 		self.HC = 0
 		self.players = []
-		logging.info(Sentences.CREATE_TEAM(self.name))
+		logging.debug(Sentences.CREATE_TEAM(self.name))
 
 	"""
 	def getPlayers(self):
@@ -29,7 +27,7 @@ class Team:
 
 	def __str__(self):
 		try:
-			toString = "Equipo " + self.name + " tiene " + str(self.HC) + " PH en corazones."
+			toString = "Equipo " + self.name + " tiene " + str(self.HC) + " Honores en corazones."
 			toString += "\n\tJUGADORES: "
 			for player in self.players:
 				toString += "\n\t" + str(player)
@@ -40,7 +38,7 @@ class Team:
 
 	def deleteTeam(self):
 		self.players = []
-		logging.info(Sentences.DEL_TEAM(self.name))
+		logging.debug(Sentences.DEL_TEAM(self.name))
 		del self
 
 

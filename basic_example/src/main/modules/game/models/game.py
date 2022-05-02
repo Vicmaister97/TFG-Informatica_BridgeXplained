@@ -3,8 +3,6 @@ from manageTeams import *
 from helpers.sentences import *
 import logging
 
-logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
-
 
 class Game:
 
@@ -14,7 +12,7 @@ class Game:
 		self.playerManager = ManagePlayers()
 		self.teamManager = ManageTeams()
 		self.HC = 0
-		logging.info(Sentences.CREATE_GAME(self.name))
+		logging.debug(Sentences.CREATE_GAME(self.name))
 
 
 	def createPlayer(self, playerName, teamName):
@@ -51,5 +49,5 @@ class Game:
 	def deleteGame(self):
 		self.playerManager.delete()
 		self.teamManager.delete()
-		logging.info(Sentences.DEL_GAME(self.name))
+		logging.debug(Sentences.DEL_GAME(self.name))
 		del self

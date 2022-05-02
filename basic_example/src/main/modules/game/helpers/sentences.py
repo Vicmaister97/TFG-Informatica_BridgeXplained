@@ -24,7 +24,7 @@ class Sentences:
 	###	GAME ATTRIBUTES
 	@classmethod
 	def GAME_HC_S(cls, HC):
-		return "\nSe conocen " + str(HC) + " PH en Corazones."
+		return "\nSe conocen " + str(HC) + " Honores en Corazones."
 
 	@classmethod
 	def GAME_INFO_S(cls, name):

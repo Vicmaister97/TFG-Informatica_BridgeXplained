@@ -8,9 +8,6 @@ import logging
 from pyke import knowledge_engine, krb_traceback, goal
 from datetime import datetime
 
-logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
-
-
 sys.path.append("src/main/modules/game/")
 from manageGames import *
 from helpers.exceptions import *
@@ -43,20 +40,29 @@ PROOF_BEGIN_DECORATOR = "\n\n\n------------------------------------\n"
 PROOF_END_DECORATOR = "\n------------------------------------\n\n\n"
 
 
-PROOF_BEGIN = PROOF_BEGIN_DECORATOR + "\n\nBEGIN PROOF of %s.\n\n"
+PROOF_BEGIN = PROOF_BEGIN_DECORATOR + "\nBEGIN PROOF of %s.\n"
 PROOF_START = "\n\nPerforming the proof of %s:"
 SUBPROOF_START = "\nPerforming the sub-proof (%s):"
-PROOF_END = "\n\nEND PROOF of %s." + PROOF_END_DECORATOR
+PROOF_END = "\nEND PROOF of %s.\n" + PROOF_END_DECORATOR
 PROOF_DONE = "\tProof done."
 PROOF_DONE_BAD = "\tProof done. It's not a complete proof as there was an exception."
 PROOF_TIME = "\tProof time: %.4f seconds"
 
 # FILES VARIABLES
-CONCLUSIONS_DIRECTORY = "conclusions/"
-F_MID_RULES = CONCLUSIONS_DIRECTORY + "midRules.txt"
-F_CONCLUSIONS = CONCLUSIONS_DIRECTORY + "conclusiones.txt"
-F_CONCLUSIONS_BC = CONCLUSIONS_DIRECTORY + "conclusiones_bc.txt"
-F_CONCLUSIONS_FC = CONCLUSIONS_DIRECTORY + "conclusiones_fc.txt"
+DIRECTORY_CONCLUSSIONS = "./conclusions/"
+DIRECTORY_LOG = "./logs/"
+DIRECTORIES = [DIRECTORY_CONCLUSSIONS, DIRECTORY_LOG]
+
+F_MID_RULES = DIRECTORY_CONCLUSSIONS + "midRules.txt"
+F_CONCLUSIONS = DIRECTORY_CONCLUSSIONS + "conclusiones.txt"
+F_CONCLUSIONS_FC = DIRECTORY_CONCLUSSIONS + "conclusiones_fc.txt"
+F_CONCLUSIONS_BC = DIRECTORY_CONCLUSSIONS + "conclusiones_bc.txt"
+
+LIST_OF_FILES = [F_MID_RULES, F_CONCLUSIONS, F_CONCLUSIONS_FC, F_CONCLUSIONS_BC]
+
+logging.basicConfig(filename=DIRECTORY_LOG+'game.log', encoding='utf-8', level=logging.DEBUG)
+
+
 
 def fc():
 	try:
@@ -309,18 +315,7 @@ def bc(rule_to_prove, isInitialProof):
 
 """ -------- AUXILIARY METHODS -------- """
 
-####	LOGGING
-def printAndLog(sentence):
-	print(sentence)
-	logging.debug(sentence)
-
-def printAndLogInfo(sentence):
-	print(sentence)
-	logging.info(sentence)
-
-def printAndLogWarning(sentence):
-	print(sentence)
-	logging.warning(sentence)
+####	LOGGING and print
 
 def logTrueRule(rule_to_prove, file):
 	printAndLogInfo(TRUE_RULE % (rule_to_prove))
@@ -361,6 +356,18 @@ def logProofEND(file):
 	with open(file, "a") as f:
 		f.write(PROOF_END % (rule_prooving))
 
+def printAndLog(sentence):
+	print(sentence)
+	logging.debug(sentence)
+
+def printAndLogInfo(sentence):
+	print(sentence)
+	logging.info(sentence)
+
+def printAndLogWarning(sentence):
+	print(sentence)
+	logging.warning(sentence)
+
 
 ####	MANAGE PROGRAM
 
@@ -400,11 +407,14 @@ def RESET_PROOF(file):
 
 
 def cleanFiles():
+	# We need that the directories exists
+	for directory in DIRECTORIES:
+		if os.path.isdir(directory) == False:
+			os.mkdir(directory)
+
 	# Clean files
-	open(F_MID_RULES, "w").close()
-	open(F_CONCLUSIONS, "w").close()
-	open(F_CONCLUSIONS_FC, "w").close()
-	open(F_CONCLUSIONS_BC, "w").close()
+	for file in LIST_OF_FILES:
+		open(file, "w").close()
 
 
 def cleanEngine():

@@ -4,8 +4,6 @@ from helpers.exceptions import *
 
 import logging
 
-logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
-
 
 #### Improvement: Force them to be Team(N,S) && Team(E,O)
 
@@ -64,5 +62,5 @@ class ManageTeams:
 		for team in self.teams:
 			team.deleteTeam()
 		self.teams = []
-		logging.info(Sentences.TEAM_MANAGER_DELETED)
+		logging.debug(Sentences.TEAM_MANAGER_DELETED)
 		del self

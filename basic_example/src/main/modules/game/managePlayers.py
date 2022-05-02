@@ -3,8 +3,6 @@ from helpers.sentences import *
 from helpers.exceptions import *
 import logging
 
-logging.basicConfig(filename='game.log', encoding='utf-8', level=logging.DEBUG)
-
 
 class ManagePlayers:
 
@@ -59,5 +57,5 @@ class ManagePlayers:
 		for player in self.players:
 			player.deletePlayer()
 		self.players = []
-		logging.info(Sentences.PLAYER_MANAGER_DELETED)
+		logging.debug(Sentences.PLAYER_MANAGER_DELETED)
 		del self
