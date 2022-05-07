@@ -23,9 +23,9 @@ TASKS:
 
 -	Probar PREGUNTAS Y RESPUESTAS AL USUARIO
 
--	conclusiones_fc para guardar la traza de las pruebas que se han pedido demostrar con FC y han sido verdaderas (SOLO SE VA A GUARDAR LA SENTENCIA PROBADA, *NO EL RAZONAMIENTO*)
+-	CREADOR DE EJERCICIOS DINÁMICO!!!!!!!!
 
--	PROBAR A LEER UN ESTADO DE PARTIDA DE UN .TXT (*partida.txt*) Y CARGARLO EN EL .KFB (conjunto de hechos).
+	-	PROBAR A LEER UN ESTADO DE PARTIDA DE UN .TXT (*partida.txt*) Y CARGARLO EN EL .KFB (conjunto de hechos).
 
 -	Comentar todos los ficheros con mis datos (correo...)
 
@@ -41,12 +41,13 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
--	Arreglar forall de backwards chaining
+-	Arreglar forall de backwards chaining!! Dejar basic_example fino fino.
+
+-	UNIR ManageGame con driver!!! Poner todos los métodos de ManageGame como métodos del driver para llamarlos.
+
+	-	Quizás crear BridgeXplained.py donde se llama a driver y los métodos de ManageGames, ManagePlayers y ManageTeams
 
 -	Logging engine stats
-
-
--	Escribir los mensajes de logs de las clases y del motor de inferencia en los ficheros "Sentences.py" y "UserSentences.py" correspondientes.
 
 .
 
@@ -71,6 +72,10 @@ TASKS:
 	-	Logging debug para la traza normal. Logging info para las conclusiones de si una regla introducida es verdadera o falsa. Logging error y warning para la gestion de excepciones.
 
 	-	Logging PONER HORA Y DIA DE STARTING PROGRAM!!
+
+-	conclusiones_fc para guardar la traza de las pruebas que se han pedido demostrar con FC (SOLO SE VA A GUARDAR LA SENTENCIA PROBADA, *NO EL RAZONAMIENTO*)
+
+-	Escribir los mensajes de logs de las clases y del motor de inferencia en los ficheros "sentences.py" y "driverSentences.py" correspondientes.
 
 .
 

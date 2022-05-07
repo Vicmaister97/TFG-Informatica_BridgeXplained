@@ -35,6 +35,7 @@ class Sentences:
 		return "\n---- END " + name + " INFO ----\n"
 
 
+
 	###	EXCEPTION MESSAGES
 	@classmethod
 	def NO_INFO_PLAYER(cls, name):
@@ -43,6 +44,7 @@ class Sentences:
 	@classmethod
 	def NO_INFO_TEAM(cls, name):
 		return "There is no info about Team " + name + "."
+
 
 
 	@classmethod
@@ -60,6 +62,7 @@ class Sentences:
 	@classmethod
 	def NO_PLAYER_IN_TEAM(cls, name):
 		return "Player " + name + " not found in any team."
+
 
 
 	@classmethod

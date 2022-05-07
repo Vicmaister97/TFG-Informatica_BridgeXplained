@@ -131,3 +131,5 @@ dmypy.json
 
 # CUSTOM ONES
 **/compiled_krb
+**/logs
+**/conclusions

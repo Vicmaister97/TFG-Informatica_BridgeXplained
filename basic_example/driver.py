@@ -8,60 +8,30 @@ import logging
 from pyke import knowledge_engine, krb_traceback, goal
 from datetime import datetime
 
+from driverHelpers.driverSentences import *
 sys.path.append("src/main/modules/game/")
 from manageGames import *
 from helpers.exceptions import *
 
-"""
+# Logging configuration
+logging.basicConfig(filename=DriverSentences.DIRECTORY_LOG+'game.log', encoding='utf-8', level=logging.DEBUG)
+
+
 ######## ######## GLOBAL VARIABLES ######## ########
-"""
+
 
 engine = knowledge_engine.engine(__file__)
 
 """ 
-Variable "activated" is use for executing forward or backwards chaining several times
+	Variable "activated" is use for executing forward or backwards chaining several times
 	and only execute the complete engine reasoning once.
 """
 isActiveFC = False
 isActiveBC = False
 
-
 performingProof = False     # Used for not trying to proove middle rules that we know are true
 startTime = time.time()     # For exception handling
 rule_prooving = "NO RULE"
-
-# USER MESSAGES
-TRUE_RULE = "\n------------\n%s\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n"
-FALSE_RULE = "\n------------\n%s\nThe rule you wrote is False.\n------------\n"
-RESET_S = "\n\n********RESETTING THE PROGRAM********\n\n"
-START = "\n\n********STARTING THE PROGRAM********\n%s\n\n"
-
-PROOF_BEGIN_DECORATOR = "\n\n\n------------------------------------\n"
-PROOF_END_DECORATOR = "\n------------------------------------\n\n\n"
-
-
-PROOF_BEGIN = PROOF_BEGIN_DECORATOR + "\nBEGIN PROOF of %s.\n"
-PROOF_START = "\n\nPerforming the proof of %s:"
-SUBPROOF_START = "\nPerforming the sub-proof (%s):"
-PROOF_END = "\nEND PROOF of %s.\n" + PROOF_END_DECORATOR
-PROOF_DONE = "\tProof done."
-PROOF_DONE_BAD = "\tProof done. It's not a complete proof as there was an exception."
-PROOF_TIME = "\tProof time: %.4f seconds"
-
-# FILES VARIABLES
-DIRECTORY_CONCLUSSIONS = "./conclusions/"
-DIRECTORY_LOG = "./logs/"
-DIRECTORIES = [DIRECTORY_CONCLUSSIONS, DIRECTORY_LOG]
-
-F_MID_RULES = DIRECTORY_CONCLUSSIONS + "midRules.txt"
-F_CONCLUSIONS = DIRECTORY_CONCLUSSIONS + "conclusiones.txt"
-F_CONCLUSIONS_FC = DIRECTORY_CONCLUSSIONS + "conclusiones_fc.txt"
-F_CONCLUSIONS_BC = DIRECTORY_CONCLUSSIONS + "conclusiones_bc.txt"
-
-LIST_OF_FILES = [F_MID_RULES, F_CONCLUSIONS, F_CONCLUSIONS_FC, F_CONCLUSIONS_BC]
-
-logging.basicConfig(filename=DIRECTORY_LOG+'game.log', encoding='utf-8', level=logging.DEBUG)
-
 
 
 def fc():
@@ -123,8 +93,8 @@ def fc_proove(rule_to_prove):
 		With FC, we don't get the reasoning.
 		"""
 		goal = False
-		logProofBEGIN(F_CONCLUSIONS_FC)
-		printAndLog(PROOF_START % rule_prooving)
+		logProofBEGIN(DriverSentences.F_CONCLUSIONS_FC)
+		printAndLog(DriverSentences.PROOF_START % rule_prooving)
 		# Measure time of the proof
 		startTime = time.time()
 
@@ -137,9 +107,9 @@ def fc_proove(rule_to_prove):
 				#print gen2
 				goal = True
 		if goal == True:
-			logTrueRule(rule_to_prove, F_CONCLUSIONS_FC)
+			logTrueRule(rule_to_prove, DriverSentences.F_CONCLUSIONS_FC)
 		else:
-			logFalseRule(rule_to_prove, F_CONCLUSIONS_FC)
+			logFalseRule(rule_to_prove, DriverSentences.F_CONCLUSIONS_FC)
 
 
 		# Measure time of the proof
@@ -147,16 +117,16 @@ def fc_proove(rule_to_prove):
 		proofTime = endTime - startTime
 
 		# Logging
-		logProofDone(rule_to_prove, proofTime, F_CONCLUSIONS_FC)
+		logProofDone(rule_to_prove, proofTime, DriverSentences.F_CONCLUSIONS_FC)
 
 
 	except Exception as e:
 		logging.error(e)
-		RESET_PROOF(F_CONCLUSIONS_FC)
+		RESET_PROOF(DriverSentences.F_CONCLUSIONS_FC)
 		#sys.exit(1)
 	except NotFound as e:
 		logging.warning(e)
-		RESET_PROOF(F_CONCLUSIONS_FC)
+		RESET_PROOF(DriverSentences.F_CONCLUSIONS_FC)
 
 
 
@@ -206,14 +176,14 @@ def bc(rule_to_prove, isInitialProof):
 		The main importance of this proving goal is that
 			*** we obtain the reasoning that leds to the proof of this goal ***
 		"""
-		logProofBEGIN(F_CONCLUSIONS_BC)
+		logProofBEGIN(DriverSentences.F_CONCLUSIONS_BC)
 		goal = False
 
 		if isInitialProof == True:
 			rule_prooving = rule_to_prove
-			printAndLog(PROOF_START % rule_prooving)
+			printAndLog(DriverSentences.PROOF_START % rule_prooving)
 		else:
-			printAndLog(SUBPROOF_START % rule_to_prove)
+			printAndLog(DriverSentences.SUBPROOF_START % rule_to_prove)
 
 		# Measure time of the proof
 		startTime = time.time()
@@ -229,15 +199,15 @@ def bc(rule_to_prove, isInitialProof):
 
 		if isInitialProof == True:
 			if goal == True:
-				logTrueRule(rule_to_prove, F_CONCLUSIONS_BC)
+				logTrueRule(rule_to_prove, DriverSentences.F_CONCLUSIONS_BC)
 			else:
-				logFalseRule(rule_to_prove, F_CONCLUSIONS_BC)
+				logFalseRule(rule_to_prove, DriverSentences.F_CONCLUSIONS_BC)
 				# Measure time of the proof
 				endTime = time.time()
 				proofTime = endTime - startTime
 
 				# Logging
-				logProofDone(rule_to_prove, proofTime, F_CONCLUSIONS_BC)
+				logProofDone(rule_to_prove, proofTime, DriverSentences.F_CONCLUSIONS_BC)
 				return
 
 		"""
@@ -255,7 +225,7 @@ def bc(rule_to_prove, isInitialProof):
 			we hit an initial fact.
 		"""
 		midRules = []
-		with open(F_MID_RULES, "r") as f:
+		with open(DriverSentences.F_MID_RULES, "r") as f:
 			lines = f.readlines()
 			for line in lines:
 				if "bc_numbers" in line:
@@ -271,14 +241,14 @@ def bc(rule_to_prove, isInitialProof):
 			proofTime = endTime - startTime
 
 			# Logging
-			logProofDone(rule_to_prove, proofTime, F_CONCLUSIONS_BC)
+			logProofDone(rule_to_prove, proofTime, DriverSentences.F_CONCLUSIONS_BC)
 			return
 
 		performingProof = True
 		
 		# We remove those mid rules from the conclussions file
 		# We leave only the final facts
-		with open(F_MID_RULES, "w") as new_f:
+		with open(DriverSentences.F_MID_RULES, "w") as new_f:
 			for followRule in midRules:
 				lines.remove(followRule)
 
@@ -300,17 +270,17 @@ def bc(rule_to_prove, isInitialProof):
 			proofTime = endTime - startTime
 
 			# Logging
-			logProofDone(rule_to_prove, proofTime, F_CONCLUSIONS_BC)
+			logProofDone(rule_to_prove, proofTime, DriverSentences.F_CONCLUSIONS_BC)
 
 
 	except Exception as e:
 		logging.error(e)
-		RESET_PROOF(F_CONCLUSIONS_BC)
+		RESET_PROOF(DriverSentences.F_CONCLUSIONS_BC)
 		#sys.exit(1)
 
 	except NotFound as e:
 		logging.warning(e)
-		RESET_PROOF(F_CONCLUSIONS_BC)
+		RESET_PROOF(DriverSentences.F_CONCLUSIONS_BC)
 
 
 """ -------- AUXILIARY METHODS -------- """
@@ -318,43 +288,43 @@ def bc(rule_to_prove, isInitialProof):
 ####	LOGGING and print
 
 def logTrueRule(rule_to_prove, file):
-	printAndLogInfo(TRUE_RULE % (rule_to_prove))
+	printAndLogInfo(DriverSentences.TRUE_RULE % (rule_to_prove))
 	with open(file, "a") as f:
-		f.write(TRUE_RULE % (rule_to_prove))
+		f.write(DriverSentences.TRUE_RULE % (rule_to_prove))
 
 def logFalseRule(rule_to_prove, file):
-	printAndLogInfo(FALSE_RULE % (rule_to_prove))
+	printAndLogInfo(DriverSentences.FALSE_RULE % (rule_to_prove))
 	with open(file, "a") as f:
-		f.write(FALSE_RULE % (rule_to_prove))
+		f.write(DriverSentences.FALSE_RULE % (rule_to_prove))
 
 
 def logProofDone(rule_to_prove, proofTime, file):
-	printAndLog(PROOF_DONE)
+	printAndLog(DriverSentences.PROOF_DONE)
 	logProofTime(proofTime)
 	logProofEND(file)
 
 def logProofDoneBad(proofTime, file):
-	printAndLogWarning(PROOF_DONE_BAD)
+	printAndLogWarning(DriverSentences.PROOF_DONE_BAD)
 	logProofTime(proofTime)
 	logProofEND(file)
 
 
 def logProofTime(proofTime):
-	printAndLog(PROOF_TIME % (proofTime))
+	printAndLog(DriverSentences.PROOF_TIME % (proofTime))
 
 def logProofBEGIN(file):
 	global rule_prooving
-	printAndLog(PROOF_BEGIN % (rule_prooving))
+	printAndLog(DriverSentences.PROOF_BEGIN % (rule_prooving))
 	with open(file, "a") as f:
-		f.write(PROOF_BEGIN % (rule_prooving))
+		f.write(DriverSentences.PROOF_BEGIN % (rule_prooving))
 
 def logProofEND(file):
 	global rule_prooving
-	printAndLog(PROOF_END % (rule_prooving))
+	printAndLog(DriverSentences.PROOF_END % (rule_prooving))
 	# Leave some empty space in the conclussions_bc file for
 	# future proofs
 	with open(file, "a") as f:
-		f.write(PROOF_END % (rule_prooving))
+		f.write(DriverSentences.PROOF_END % (rule_prooving))
 
 def printAndLog(sentence):
 	print(sentence)
@@ -374,8 +344,8 @@ def printAndLogWarning(sentence):
 def START_CLEAN():
 	now = datetime.now()
 	nowStr = now.strftime("%d/%m/%Y %H:%M:%S")
-	print(START) % nowStr
-	logging.debug(START % nowStr)
+	print(DriverSentences.START) % nowStr
+	logging.debug(DriverSentences.START % nowStr)
 
 	# In the start we clean previous conclussions files
 	#   and the engine
@@ -388,8 +358,8 @@ def RESET():
 	krb_traceback.print_exc()
 	#logging.debug(krb_traceback)
 
-	print(RESET_S)
-	logging.debug(RESET_S)
+	print(DriverSentences.RESET_S)
+	logging.debug(DriverSentences.RESET_S)
 
 	cleanEngine()
 
@@ -408,12 +378,12 @@ def RESET_PROOF(file):
 
 def cleanFiles():
 	# We need that the directories exists
-	for directory in DIRECTORIES:
+	for directory in DriverSentences.DIRECTORIES:
 		if os.path.isdir(directory) == False:
 			os.mkdir(directory)
 
 	# Clean files
-	for file in LIST_OF_FILES:
+	for file in DriverSentences.LIST_OF_FILES:
 		open(file, "w").close()
 
 
