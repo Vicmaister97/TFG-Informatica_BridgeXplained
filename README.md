@@ -8,10 +8,24 @@ TASKS:
 
 
 ********************** TO BE DONE **********************
+
+
 -	**REGLAS EJERCICIO 1 BRIDGE**
 
-
 -	**CREAR TESTS!!!!!!** Para clases (test unitarios) y para el driver (test integración)
+
+
+
+---- USABILIDAD ----
+-	Sacar *lista de reglas actualizadas definidas en el .krb* para poder *preguntarlas como usuario*. Es que si no, no tiene sentido pq no van a poder hacer preguntas de razonamientos especificos.
+
+	-	**GUARDAR PAR REGLA/EXPICACION CON FRASE**, que sea human-readable vamos. Que pregunta 
+
+	driver.bc('bc_numbers.honores_corazones_new_post(S, 1)', True)
+
+	Y que entienda que regla es honores_corazones_new_post:
+		*regla con el numero de honores en corazones de un jugador como conclusion del motor despues de haber sacado que se conocen todos los honores en ese palo*
+
 
 -	*conclusiones_fc* MEJORAR que solo se pongan las reglas verdaderas y falsas (minimo todo casi rollo lista, NO rollo log de begin y end).
 
@@ -116,3 +130,8 @@ Una opción sería que el programa estuviera en un repositorio de Github y ser u
 Sin embargo, una verdadera implementación en la realidad sería que los usuarios se conecten a la web de BridgeXplained para realizar sus ejercicios.
 
 Para cada usuario se lanzaría un proceso en el background del servidor donde se resuelve su ejercicio, junto con los correspondientes razonamientos. También podría consultar su fichero log para ver la traza del programa, O SE PODRÍA ESCRIBIR POR PANTALLA ESTA TRAZA DEL LOG!!!
+
+
+************ ERRORES RAROS ************
+
+NO llamar a una variable *rule* en las reglas (BC.krb) porque al traducirse las reglas en codigo Python, se sobreescribe una variable interna llamada rule...

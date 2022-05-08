@@ -29,8 +29,8 @@ evaluar_honores_corazones_conocidos
 		python tot = tot + $puntos
 
 		python midRules = open("conclusions/midRules.txt", "a")
-		python rule = "bc_numbers.honores_corazones_new(%s, %s)\n" % ($player, $puntos)
-		python midRules.write(rule)
+		python rule1 = "bc_numbers.honores_corazones_new(%s, %s)\n" % ($player, $puntos)
+		python midRules.write(rule1)
 		python midRules.close()
 
 	$tot = int(tot)
@@ -74,8 +74,8 @@ evaluar_honores_corazones_desconocidos_minimos
 		numbers.honores_corazones_min($player, $puntos)
 		python tot_min = tot_min + $puntos
 
-		python rule = "bc_numbers.honores_corazones_min(%s, %s)\n" % ($player, $puntos)
-		python midRules.write(rule)
+		python rule1 = "bc_numbers.honores_corazones_min(%s, %s)\n" % ($player, $puntos)
+		python midRules.write(rule1)
 
 	$tot_min = int(tot_min)
 

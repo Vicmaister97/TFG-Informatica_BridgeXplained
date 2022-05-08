@@ -237,8 +237,6 @@ def bc(rule_to_prove, isInitialProof):
 					midRules.append(line)
 
 		if not midRules:   # Empty list
-			print ("SE ACABO WEEEEEEEYYYYYY")
-
 			if isInitialProof == True:
 				# Measure time of the proof
 				endTime = time.time()
@@ -248,7 +246,7 @@ def bc(rule_to_prove, isInitialProof):
 				logProofDone(rule_to_prove, proofTime, DriverSentences.F_CONCLUSIONS_BC)
 			return
 
-
+		## IMP: Indicates subproof error (midRules)
 		performingProof = True
 		
 		# We remove those mid rules from the conclussions file
@@ -262,12 +260,8 @@ def bc(rule_to_prove, isInitialProof):
 		
 		# Now, we have to prove those mid rules
 		for followRule in midRules:
-			##while performingProof:
-			printAndLog("SE VIENE " + followRule)
-
 			bc(followRule.rstrip("\n"), False)
-
-			printAndLog("SE FUE " + followRule)
+			# Check subproof error to stop reasoning
 			if performingProof == False:
 				break
 
