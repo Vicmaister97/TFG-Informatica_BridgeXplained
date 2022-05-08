@@ -17,6 +17,7 @@ TASKS:
 
 
 ---- USABILIDAD ----
+
 -	Sacar *lista de reglas actualizadas definidas en el .krb* para poder *preguntarlas como usuario*. Es que si no, no tiene sentido pq no van a poder hacer preguntas de razonamientos especificos.
 
 	-	**GUARDAR PAR REGLA/EXPICACION CON FRASE**, que sea human-readable vamos. Que pregunta 
@@ -62,9 +63,6 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
--	Performing de proof and subproof QUITAR PRINT, solo en LOG!!
-
--	Arreglar forall de backwards chaining!! Dejar basic_example fino fino.
 
 -	UNIR ManageGame con driver!!! Poner todos los métodos de ManageGame como métodos del driver para llamarlos.
 
@@ -100,6 +98,11 @@ TASKS:
 
 -	Escribir los mensajes de logs de las clases y del motor de inferencia en los ficheros "sentences.py" y "driverSentences.py" correspondientes.
 
+-	Performing de proof and subproof solo en LOG
+
+-	BC errors solved (do not name a variable "rule")
+
+-	Dejar basic_example fino fino.
 .
 
 .
