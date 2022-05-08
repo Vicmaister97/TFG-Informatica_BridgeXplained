@@ -10,7 +10,7 @@ sacar_honores_corazones_conocidos
 
 	# Escribir en el fichero de conclusiones
 	python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos_min)
-	python rule1 = "INITIAL_FACT: honores_corazones(%s, %s, %s)\n" % ($player, $puntos_min, $puntos_max)
+	python rule1 = "VIENE DE -- INITIAL_FACT: honores_corazones(%s, %s, %s)\n" % ($player, $puntos_min, $puntos_max)
 
 	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python f.write(phrase_explained)
@@ -37,7 +37,7 @@ evaluar_honores_corazones_conocidos
 	#check $tot != 5
 
 	# Escribir en el fichero de conclusiones
-	python phrase_explained = "\nSe conocen %d PH en corazones\n" % ($tot)
+	python phrase_explained = "\nVIENE DE -- Se conocen %d PH en corazones\n" % ($tot)
 
 	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python f.write(phrase_explained)
@@ -55,7 +55,7 @@ sacar_honores_corazones_desconocidos_minimos
 
 	# Escribir en el fichero de conclusiones
 	python phrase_explained = "El jugador %s tiene %d PH en corazones como minimo\n" % ($player, $puntos_min)
-	python rule1 = "INITIAL_FACT: honores_corazones(%s, %s, %s)\n" % ($player, $puntos_min, $puntos_max)
+	python rule1 = "VIENE DE -- INITIAL_FACT: honores_corazones(%s, %s, %s)\n" % ($player, $puntos_min, $puntos_max)
 
 	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python f.write(phrase_explained)
@@ -80,7 +80,7 @@ evaluar_honores_corazones_desconocidos_minimos
 	$tot_min = int(tot_min)
 
 	# Escribir en el fichero de conclusiones
-	python phrase_explained = "Se conocen %d PH en corazones como minimo\n" % ($tot_min)
+	python phrase_explained = "VIENE DE -- Se conocen %d PH en corazones como minimo\n" % ($tot_min)
 
 	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python f.write(phrase_explained)
@@ -99,7 +99,7 @@ conclusiones_honores_corazones
 	check (5-$tot-$tot_min) == 0
 
 	# Escribir en el fichero de conclusiones
-	python phrase = "\nSE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\nEsto es porque se conocen de seguro %d y como minimo %d, y el total debe ser 5.\n\n" % ($tot, $tot_min)
+	python phrase = "\nVIENE DE -- SE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\nEsto es porque se conocen de seguro %d y como minimo %d, y el total debe ser 5 (%d + %d = 5).\n\n" % ($tot, $tot_min, $tot, $tot_min)
 	python rule1 = "bc_numbers.honores_corazones_conocidos_new(%s)\n" % ($tot)
 	python rule2 = "bc_numbers.honores_corazones_desconocidos_min_new(%s)\n" % ($tot_min)
 
@@ -126,17 +126,14 @@ cerrar_honores_corazones_desconocidos
 	numbers.honores_corazones_min($player, $puntos)
 
 	# Escribir en el fichero de conclusiones
-	python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos)
+	python phrase_explained = "VIENE DE -- El jugador %s tiene %d PH en corazones\n" % ($player, $puntos)
 	python rule1 = "bc_numbers.honores_corazones_min(%s, %s)\n" % ($player, $puntos)
+	python rule2 = "bc_numbers.honores_corazones_FINAL()\n"
         
 	python f = open("conclusions/conclusiones_bc.txt", "a")
 	python midRules = open("conclusions/midRules.txt", "a")
 	python f.write(phrase_explained)
 	python midRules.write(rule1)
-	python midRules.write("bc_numbers.honores_corazones_FINAL()\n")
+	python midRules.write(rule2)
 	python f.close()
 	python midRules.close()
-
-	# Necesario para obtener todo el razonamiento hasta este argumento
-	#python import os
-	#python os.system(driver.bc('bc_numbers.honores_corazones_FINAL()'))

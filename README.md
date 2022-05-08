@@ -17,6 +17,16 @@ TASKS:
 
 	- Darle una vuelta a bc (2, uno como esta con el razonamiento y otro rollo fc lista)
 
+
+
+-	**ARBOL DE RAZONAMIENTO/DEDUCCION!!!!!!!!!!!!!!!!!!**
+
+	-	Representacion grafica del **arbol logico** en cada deduccion, compo hace DFS o recorrido en profundidad de las reglas logicas
+	
+	-	Tabular los "VIENE DE --" para visión de arbol
+
+
+
 -	SEPARAR metodos basicos de las clases (Player... metodos create, print...) con los que son CUSTOM DE LAS REGLAS DE LOS QUE QUEREMOS METER como HC !!!!!!!
 
 	SOL: SEPARAR MODELO de SERVICIO!!!!!!!!!!!!!!!!!!
@@ -31,15 +41,14 @@ TASKS:
 
 -	Mejorar todos los README con celdas para las líneas de código a ejecutar... (rollo TFG Mates)
 
--	PYKE CON PYTHON3!!! Instalar PyKE v3 en pip3
-
--	*PONER PRIVADOS LOS ATRIBUTOS!!* Ahora todo es público y accesible...???
 
 .
 
 .
 
 ********************** IN PROGRESS **********************
+
+-	Performing de proof and subproof QUITAR PRINT, solo en LOG!!
 
 -	Arreglar forall de backwards chaining!! Dejar basic_example fino fino.
 
@@ -86,6 +95,12 @@ TASKS:
 -	Convertir clases en BEANS, **libreria Pickle SERIALIZAR & Guardar partida!!**
 
 -	Probar a quitar Sentences. en todas las frases importadas
+
+
+-	PYKE CON PYTHON3!!! Instalar PyKE v3 en pip3
+
+-	*PONER PRIVADOS LOS ATRIBUTOS!!* Ahora todo es público y accesible...???
+
 
 .
 

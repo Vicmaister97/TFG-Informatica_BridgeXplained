@@ -9,6 +9,7 @@ from pyke import knowledge_engine, krb_traceback, goal
 from datetime import datetime
 
 from driverHelpers.driverSentences import *
+from driverHelpers.driverExceptions import *
 sys.path.append("src/main/modules/game/")
 from manageGames import *
 from helpers.exceptions import *
@@ -147,6 +148,8 @@ def bc(rule_to_prove, isInitialProof):
 			# Run the engine and measure time of the complete FC reasoning
 			runEngine('fc_numbers')     # NECESSARY FOR COMPLEX PROOFS
 
+			ManageGames.printGames()
+
 			# To run several times the forward-chaining test without
 			# executing again the engine complete reasoning
 			isActiveFC = True
@@ -176,14 +179,14 @@ def bc(rule_to_prove, isInitialProof):
 		The main importance of this proving goal is that
 			*** we obtain the reasoning that leds to the proof of this goal ***
 		"""
-		logProofBEGIN(DriverSentences.F_CONCLUSIONS_BC)
 		goal = False
 
 		if isInitialProof == True:
 			rule_prooving = rule_to_prove
+			logProofBEGIN(DriverSentences.F_CONCLUSIONS_BC)
 			printAndLog(DriverSentences.PROOF_START % rule_prooving)
 		else:
-			printAndLog(DriverSentences.SUBPROOF_START % rule_to_prove)
+			logging.debug(DriverSentences.SUBPROOF_START % rule_to_prove)
 
 		# Measure time of the proof
 		startTime = time.time()
@@ -236,13 +239,15 @@ def bc(rule_to_prove, isInitialProof):
 		if not midRules:   # Empty list
 			print ("SE ACABO WEEEEEEEYYYYYY")
 
-			# Measure time of the proof
-			endTime = time.time()
-			proofTime = endTime - startTime
+			if isInitialProof == True:
+				# Measure time of the proof
+				endTime = time.time()
+				proofTime = endTime - startTime
 
-			# Logging
-			logProofDone(rule_to_prove, proofTime, DriverSentences.F_CONCLUSIONS_BC)
+				# Logging
+				logProofDone(rule_to_prove, proofTime, DriverSentences.F_CONCLUSIONS_BC)
 			return
+
 
 		performingProof = True
 		
@@ -254,33 +259,27 @@ def bc(rule_to_prove, isInitialProof):
 
 			# Write only the rules not to prove (final facts)
 			new_f.writelines(lines)
-			
-		print(midRules)
+		
 		# Now, we have to prove those mid rules
 		for followRule in midRules:
-			while performingProof:
-				print("SE VIENE %s") % (followRule)
-				# We run this rule to follow the reasoning
-				bc(followRule.rstrip("\n"), False)
+			##while performingProof:
+			printAndLog("SE VIENE " + followRule)
+
+			bc(followRule.rstrip("\n"), False)
+
+			printAndLog("SE FUE " + followRule)
+			if performingProof == False:
+				break
 
 
-		if isInitialProof == True:
-			# Measure time of the proof
-			endTime = time.time()
-			proofTime = endTime - startTime
-
-			# Logging
-			logProofDone(rule_to_prove, proofTime, DriverSentences.F_CONCLUSIONS_BC)
-
+	except NotFound as e:
+		logging.warning(e)
+		RESET_PROOF(DriverSentences.F_CONCLUSIONS_BC)
 
 	except Exception as e:
 		logging.error(e)
 		RESET_PROOF(DriverSentences.F_CONCLUSIONS_BC)
 		#sys.exit(1)
-
-	except NotFound as e:
-		logging.warning(e)
-		RESET_PROOF(DriverSentences.F_CONCLUSIONS_BC)
 
 
 """ -------- AUXILIARY METHODS -------- """
@@ -308,13 +307,13 @@ def logProofDoneBad(proofTime, file):
 	logProofTime(proofTime)
 	logProofEND(file)
 
-
 def logProofTime(proofTime):
 	printAndLog(DriverSentences.PROOF_TIME % (proofTime))
 
+
 def logProofBEGIN(file):
 	global rule_prooving
-	printAndLog(DriverSentences.PROOF_BEGIN % (rule_prooving))
+	print(DriverSentences.PROOF_BEGIN % (rule_prooving))
 	with open(file, "a") as f:
 		f.write(DriverSentences.PROOF_BEGIN % (rule_prooving))
 
@@ -325,6 +324,7 @@ def logProofEND(file):
 	# future proofs
 	with open(file, "a") as f:
 		f.write(DriverSentences.PROOF_END % (rule_prooving))
+
 
 def printAndLog(sentence):
 	print(sentence)
@@ -368,7 +368,9 @@ def RESET():
 
 def RESET_PROOF(file):
 	global startTime
-	global rule_to_prove
+	global rule_prooving
+	global performingProof
+
 	# Measure time of the proof
 	endTime = time.time()
 	proofTime = endTime - startTime
