@@ -1,0 +1,162 @@
+# fc_numbers.krb
+
+# FALLA EL PONER numbers.REGLA dentro de un forall (mas bien dentro de otra regla)
+
+init_player
+    foreach
+        numbers.init_players()
+    assert
+        python import sys
+        python sys.path.append("src/main/modules/game/")
+        python from manageGames import *
+
+        # Vamos a crear el juego
+        python global game
+        python game = ManageGames.createGame("Maestros")
+        python game.createTeam("NS")
+        python game.createTeam("EO")
+        
+        python game.createPlayer("N", "NS")
+        python game.createPlayer("E", "EO")
+        python game.createPlayer("S", "NS")
+        python game.createPlayer("O", "EO")
+
+        numbers.initialized()
+
+sacar_honores_corazones_conocidos
+    foreach
+        numbers.initialized()
+        numbers.honores_corazones($player, $puntos_min, $puntos_max)
+
+        check $puntos_max < 6
+        check $puntos_min > -1
+        check $puntos_max == $puntos_min
+    assert
+        # Escribir en el fichero de conclusiones
+        python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos_min)
+
+        # Actualizar los HC de ese jugador
+        python global game
+        python game.setHC($player, int($puntos_min))
+
+        python f = open("conclusions/conclusiones.txt", "a")
+        python f.write(phrase_explained)
+        python f.close()
+
+        # Nueva regla
+        numbers.honores_corazones_new($player, $puntos_min)
+
+
+evaluar_honores_corazones_conocidos
+    foreach
+        numbers.honores_corazones_conocidos($known)
+        python tot = 0
+
+        forall
+            numbers.honores_corazones_new($player, $puntos)
+
+            python tot = tot + $puntos
+
+        $tot = int(tot)
+        #check $tot != 5
+    assert
+        # Escribir en el fichero de conclusiones
+        python phrase_explained = "\nSe conocen %d PH en corazones\n" % ($tot)
+
+        python f = open("conclusions/conclusiones.txt", "a")
+        python f.write(phrase_explained)
+        python f.close()
+
+        # Nueva regla
+        numbers.honores_corazones_conocidos_new($tot)
+
+
+
+sacar_honores_corazones_desconocidos_minimos
+    foreach
+        numbers.honores_corazones($player, $puntos_min, $puntos_max)
+
+        check $puntos_max < 6
+        check $puntos_min > -1
+        check $puntos_max != $puntos_min
+    assert
+        # Escribir en el fichero de conclusiones
+        python phrase_explained = "El jugador %s tiene %d PH en corazones como minimo\n" % ($player, $puntos_min)
+
+        python f = open("conclusions/conclusiones.txt", "a")
+        python f.write(phrase_explained)
+        python f.close()
+
+        # Nueva regla
+        numbers.honores_corazones_min($player, $puntos_min)
+
+
+evaluar_honores_corazones_desconocidos_minimos
+    foreach
+        numbers.honores_corazones_desconocidos_min($known)
+        python tot_min = 0
+
+        forall
+            numbers.honores_corazones_min($player, $puntos)
+
+            python tot_min = tot_min + $puntos
+
+        $tot_min = int(tot_min)
+    assert
+        # Escribir en el fichero de conclusiones
+        python phrase_explained = "Se conocen %d PH en corazones como minimo\n" % ($tot_min)
+
+        python f = open("conclusions/conclusiones.txt", "a")
+        python f.write(phrase_explained)
+        python f.close()
+
+        # Nueva regla
+        numbers.honores_corazones_desconocidos_min_new($tot_min)
+
+
+
+conclusiones_honores_corazones
+    foreach
+        numbers.honores_corazones_conocidos_new($tot)
+        numbers.honores_corazones_desconocidos_min_new($tot_min)
+        python num = $tot
+
+
+        check (5-$tot-$tot_min) == 0
+
+        # If it gets here, we have conlussions about PH
+    assert
+        # Escribir en el fichero de conclusiones
+        python phrase = "\nSE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\nEsto es porque se conocen de seguro %d y como minimo %d, y el total debe ser 5.\n\n" % ($tot, $tot_min)
+
+        python f = open("conclusions/conclusiones.txt", "a")
+        python f.write(phrase)
+        python f.close()
+
+        # Nuevas reglas
+        numbers.honores_corazones_FINAL()
+        numbers.honores_corazones_conocidos_new(5)      #PUEDE QUE SIN EL NEW????
+
+
+
+# If it gets here, we have conlussions about PH
+
+cerrar_honores_corazones_desconocidos
+    foreach
+        numbers.honores_corazones_FINAL()
+        numbers.honores_corazones_min($player, $puntos)
+    assert
+        # Escribir en el fichero de conclusiones
+        python phrase_explained = "El jugador %s tiene %d PH en corazones\n" % ($player, $puntos)
+
+        # Actualizar los HC de ese jugador
+        python global game
+        python game.setHC($player, int($puntos))
+        
+        python f = open("conclusions/conclusiones.txt", "a")
+        python f.write(phrase_explained)
+        python f.close()
+
+        # Nueva regla
+        numbers.honores_corazones_new_post($player, $puntos)
+
