@@ -10,9 +10,14 @@ TASKS:
 ********************** TO BE DONE **********************
 
 
--	**REGLAS EJERCICIO 1 BRIDGE**
+-	LIMPIAR CLASES de Honores y AJUSTAR a la nueva info!!!!!!!!!!!
+-	Starting program -- PRINT -- GAME INFO !!!!!!!!!!!!!!!
+
+
 
 -	**CREAR TESTS!!!!!!** Para clases (test unitarios) y para el driver (test integración)
+
+-	Logging engine stats
 
 
 
@@ -63,12 +68,13 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
+-	**REGLAS EJERCICIO 1 BRIDGE**
+
+
 
 -	UNIR ManageGame con driver!!! Poner todos los métodos de ManageGame como métodos del driver para llamarlos.
 
 	-	Quizás crear BridgeXplained.py donde se llama a driver y los métodos de ManageGames, ManagePlayers y ManageTeams
-
--	Logging engine stats
 
 .
 

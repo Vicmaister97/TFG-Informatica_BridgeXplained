@@ -6,9 +6,9 @@ init_player
     foreach
         numbers.init_players()
     assert
-        python import sys
-        python sys.path.append("src/main/modules/game/")
-        python from manageGames import *
+        #python import sys
+        #python sys.path.append("src/main/modules/game/")
+        #python from manageGames import *
 
         # Vamos a crear el juego
         python global game

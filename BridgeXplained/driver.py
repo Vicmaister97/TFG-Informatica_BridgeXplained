@@ -43,9 +43,9 @@ def fc():
 			START_CLEAN()
 
 			# Run the engine and measure time of the complete FC reasoning
-			runEngine('fc_numbers')
+			runEngine('fc_infoGame')
 
-			ManageGames.printGames()
+			###########ManageGames.printGames()
 
 			# To run several times the forward-chaining test without
 			# executing again the engine complete reasoning
@@ -54,7 +54,7 @@ def fc():
 
 		"""
 		# TRY TO SEE IF WE CAN ACCESS ENGINE RELATIONS
-		numbers.honores_corazones_FINAL($tot)
+		infoGame.honores_corazones_FINAL($tot)
 		# Now we read the conclusions
 		file = open("conclussions.txt", "r")
 		list_of_conclussions = file.readlines()
@@ -73,7 +73,7 @@ def fc():
 
 
 
-# driver.fc_proove('numbers.honores_corazones_new_post(S, 1)')
+# driver.fc_proove('infoGame.honores_corazones_new_post(S, 1)')
 def fc_proove(rule_to_prove):
 	fc()
 
@@ -82,7 +82,7 @@ def fc_proove(rule_to_prove):
 		global rule_prooving
 		rule_prooving = rule_to_prove
 		"""
-		with engine.prove_goal('numbers.honores_corazones_FINAL()') \
+		with engine.prove_goal('infoGame.honores_corazones_FINAL()') \
 		  as gen:
 			for vars, plan in gen:
 				print "SE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\n"
@@ -131,7 +131,7 @@ def fc_proove(rule_to_prove):
 
 
 
-# driver.bc('bc_numbers.honores_corazones_new_post(S, 1)', True)
+# driver.bc('bc_infoGame.honores_corazones_new_post(S, 1)', True)
 def bc(rule_to_prove, isInitialProof):
 	try:
 		global isActiveBC
@@ -146,7 +146,7 @@ def bc(rule_to_prove, isInitialProof):
 			START_CLEAN()
 
 			# Run the engine and measure time of the complete FC reasoning
-			runEngine('fc_numbers')     # NECESSARY FOR COMPLEX PROOFS
+			runEngine('fc_infoGame')     # NECESSARY FOR COMPLEX PROOFS
 
 			ManageGames.printGames()
 
@@ -157,7 +157,7 @@ def bc(rule_to_prove, isInitialProof):
 		if isActiveBC == False:
 
 			# Run the engine and measure time of the complete BC reasoning
-			runEngine('bc_numbers')
+			runEngine('bc_infoGame')
 			
 			# To run several times the forward-chaining test without
 			# executing again the engine complete reasoning
@@ -166,7 +166,7 @@ def bc(rule_to_prove, isInitialProof):
 
 
 		"""
-		with engine.prove_goal('bc_numbers.honores_corazones_FINAL()') \
+		with engine.prove_goal('bc_infoGame.honores_corazones_FINAL()') \
 		  as gen:
 			for vars, plan in gen:
 				print "SE CONOCEN TODOS LOS PH EN CORAZONES!!!!!\n"
@@ -231,7 +231,7 @@ def bc(rule_to_prove, isInitialProof):
 		with open(DriverSentences.F_MID_RULES, "r") as f:
 			lines = f.readlines()
 			for line in lines:
-				if "bc_numbers" in line:
+				if "bc_infoGame" in line:
 					# This means that we still have rules to prove
 					# We add the rule
 					midRules.append(line)
@@ -408,17 +408,17 @@ def runEngine(reasoning):
 	endTime = time.time()
 	engineTime = endTime - startTime
 
-	if reasoning == 'fc_numbers':
+	if reasoning == 'fc_infoGame':
 		reasoningType = "\n\nFC"
 	else:
 		reasoningType = "\n\nBC"
 	print(reasoningType + " engine time: %.6f seconds, %.0f asserts/sec" % \
-		(engineTime, engine.get_kb('numbers').get_stats()[2] / engineTime))
+		(engineTime, engine.get_kb('infoGame').get_stats()[2] / engineTime))
 
 """
 
 
-python rule = "bc_numbers.honores_corazones_new(%s, %s)\n" % ($player, $puntos)
+python rule = "bc_infoGame.honores_corazones_new(%s, %s)\n" % ($player, $puntos)
 		python f.write(rule)
 
 """

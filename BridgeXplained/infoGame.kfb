@@ -1,10 +1,59 @@
-#numbers.kfb
+#infoGame.kfb
 
-init_players()
+### AXIOMS
 
-honores_corazones_conocidos(0)
-honores_corazones_desconocidos_min(0)
-honores_corazones(S, 1, 5)
-honores_corazones(E, 0, 5)
-honores_corazones(N, 3, 3)
-honores_corazones(O, 1, 1)
+initGame()
+
+jugadorDerecha(S,E)
+jugadorDerecha(E,N)
+jugadorDerecha(N,W)
+jugadorDerecha(W,S)
+compi(N,S)
+compi(S,N)
+compi(E,W)
+compi(W,E)
+jugadorIzquierda(S,W)
+jugadorIzquierda(W,N)
+jugadorIzquierda(N,E)
+jugadorIzquierda(E,S)
+
+
+### GAME SITUATION
+
+contrato(3,ST,S)
+tiene(E,J,P)
+tiene(E,4,P)
+tiene(E,2,P)
+tiene(E,A,C)
+tiene(E,J,C)
+tiene(E,9,C)
+tiene(E,2,C)
+tiene(E,6,D)
+tiene(E,3,D)
+tiene(E,2,D)
+tiene(E,9,T)
+tiene(E,8,T)
+tiene(E,7,T)
+
+tiene(N,Q,P)
+tiene(N,10,P)
+tiene(N,K,C)
+tiene(N,8,C)
+tiene(N,A,D)
+tiene(N,Q,D)
+tiene(N,10,D)
+tiene(N,J,T)
+tiene(N,6,T)
+tiene(N,4,T)
+tiene(N,3,T)
+tiene(N,2,T)
+
+sale(W,1,6,C)
+juega(N,1,5,C)
+bazaActual(1)
+vaGanandoBaza(W)
+turno(E)
+
+
+### OBJETIVE
+#juega(E,1,X,Y)     // SI NO TIENE CORAZONES, CUALQUIER CARTA, por eso la última es una Y
