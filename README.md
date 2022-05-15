@@ -109,6 +109,7 @@ TASKS:
 -	BC errors solved (do not name a variable "rule")
 
 -	Dejar basic_example fino fino.
+
 .
 
 .
@@ -124,6 +125,7 @@ TASKS:
 
 -	*PONER PRIVADOS LOS ATRIBUTOS!!* Ahora todo es público y accesible...???
 
+.
 
 .
 
@@ -140,7 +142,14 @@ Sin embargo, una verdadera implementación en la realidad sería que los usuario
 
 Para cada usuario se lanzaría un proceso en el background del servidor donde se resuelve su ejercicio, junto con los correspondientes razonamientos. También podría consultar su fichero log para ver la traza del programa, O SE PODRÍA ESCRIBIR POR PANTALLA ESTA TRAZA DEL LOG!!!
 
+.
+
+.
 
 ************ ERRORES RAROS ************
 
 NO llamar a una variable *rule* en las reglas (BC.krb) porque al traducirse las reglas en codigo Python, se sobreescribe una variable interna llamada rule...
+
+.
+
+.
