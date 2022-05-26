@@ -1,6 +1,12 @@
 from helpers.sentences import *
+from helpers.exceptions import *
 import logging
 
+
+#######
+## Crear SETTER y atributo en el init segun config!!!
+## Asi, podemos poner nueva info/atributos de un jugador
+##	SIN TOCAR ESTE FICHERO!
 
 class Player:
 
@@ -8,36 +14,47 @@ class Player:
 	def __init__(self, name):
 		self.name = name
 		self.HC = 0
-		#self.HC = read_HC_from_conclussions(name)
+		self.cards = []
 		logging.debug(Sentences.CREATE_PLAYER(self.name))
 
-	"""
-	def getHC(self):
-		return self.HC
-	"""
 
-	def setHC(self, HC):
-		self.HC = HC
-	#######
-	## Crear SETTER y atributo en el init segun config!!!
-	## Asi, podemos poner nueva info/atributos de un jugador
-	##	SIN TOCAR ESTE FICHERO!
-
-
+	### BASIC METHODS ###
 	def __str__(self):
 		try:
-			return "Jugador " + self.name + " tiene " + str(self.HC) + " Honores en corazones."
+			toString = Sentences.PLAYER_INFO_S(self.name) \
+			+ self.stringCards()
+			#+ self.stringCards() + self.stringHC()
+			return toString
 		except AttributeError:
-			raise 
 			return Sentences.NO_INFO_PLAYER(self.name)
 
 
 	def deletePlayer(self):
+		self.cards = []
 		logging.debug(Sentences.DEL_PLAYER(self.name))
 		del self
 
 
-	#def readHCFromConclussions(player):
 
+	### ATRIBUTES/INFO FOR RULES ###
+	def setCard(self, card, suit):
+		self.cards.append((card, suit))
 
-# python if ($player == "N"): N.setHC(int($puntos_min))
+	def stringCards(self):
+		return Sentences.PLAYER_CARDS_S(self.cards)
+
+	def checkIfAbleToPlay(self, cardCheck, suitCheck):
+		for card, suit in self.cards:
+			if card == cardCheck:
+				if suit == suitCheck:
+					return
+
+		raise PlayerError(Sentences.MISSING_CARD(self.name, cardCheck, suitCheck))
+
+	"""
+	def setHC(self, HC):
+		self.HC = HC
+
+	def stringHC(self):
+		return Sentences.PLAYER_HC_S(self.knownCards)
+	"""

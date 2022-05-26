@@ -3,6 +3,13 @@ class Sentences:
 
 	DECORATOR_TREE_BEGIN = "\n*\n*\n**\n***\n*****\n"
 	DECORATOR_TREE_END = "\n*****\n***\n**\n*\n*\n"
+
+	DECORATOR = "----"
+	DECORATOR_BEGIN = "\n" + DECORATOR
+	DECORATOR_END = DECORATOR + "\n"
+
+	DECORATOR_MINI_BEGIN = "\n--"
+	DECORATOR_MINI_END = DECORATOR + "\n"
 	
 	MAX_PLAYERS_REACHED = "MAX_PLAYERS reached."
 	MAX_TEAMS_REACHED = "MAX_TEAMS reached."
@@ -15,28 +22,87 @@ class Sentences:
 	PLAYER_MANAGER_DELETED = "Player manager deleted."
 	
 	PLAYERS_INFO = "\n\n* PLAYERS INFO *\n\n" 
-	TEAMS_INFO = "\n\n-- TEAMS INFO --\n\n" 
-	GAMES_INFO = "\n\n---- GAMES INFO ----\n\n"
+	TEAMS_INFO = "\n" + DECORATOR_BEGIN + " TEAMS INFO " + DECORATOR_END + "\n"
+	GAMES_INFO = "\n" + DECORATOR_BEGIN + " GAMES INFO " + DECORATOR_END + "\n"
 
-	GAMES_DELETED = "---- GAMES DELETED ----\n"
+	GAMES_DELETED = DECORATOR_BEGIN + " GAMES DELETED " + DECORATOR_END
 
 
-	###	GAME ATTRIBUTES
+	###	GAME ATTRIBUTES ###
 	@classmethod
-	def GAME_HC_S(cls, HC):
-		return "\nSe conocen " + str(HC) + " Honores en Corazones."
+	def GAME_KNOWNCARDS_S(cls, knownCards):
+		DECORATOR = "----"
+		DECORATOR_BEGIN = "\n" + DECORATOR
+		DECORATOR_END = "\n" + DECORATOR + "\n"
+
+		sentence = DECORATOR_BEGIN + "These are the known cards:\n"
+		for card, suit in knownCards:
+			sentence += "\n" + str(card) + ", " + str(suit)
+
+		return sentence + DECORATOR_END
+
+	@classmethod
+	def GAME_HC_S(cls, honors, suit):
+		DECORATOR = "----"
+		DECORATOR_MINI_BEGIN = "\n--"
+		DECORATOR_MINI_END = DECORATOR + "\n"
+
+		return DECORATOR_MINI_BEGIN + "We know " + str(honors) + " Honors in " + str(suit) + DECORATOR_MINI_END
+
+	@classmethod
+	def PLAYER_HC_S(cls, honors, suit):
+		DECORATOR = "----"
+		DECORATOR_MINI_BEGIN = "\n--"
+		DECORATOR_MINI_END = DECORATOR + "\n"
+
+		return DECORATOR_MINI_BEGIN + "Has " + str(honors) + " Honors in " + str(suit) + DECORATOR_MINI_END
+
+
+	@classmethod
+	def PLAYER_CARDS_S(cls, cards):
+		DECORATOR = "----"
+		DECORATOR_BEGIN = "\n" + DECORATOR
+		DECORATOR_END = DECORATOR + "\n"
+
+		sentence = DECORATOR_BEGIN + "These are his/her cards:\n"
+		for card, suit in cards:
+			sentence += "\n" + str(card) + ", " + str(suit)
+
+		return sentence + DECORATOR_END
+
+	@classmethod
+	def MISSING_CARD(cls, name, card, suit):
+		return "LOGIC ERROR: Player " + name + " does not have the " + str(card) + " of " + str(suit) + "."
+
 
 	@classmethod
 	def GAME_INFO_S(cls, name):
-		return "\n\n---- GAME " + name + " INFO ----\n"
+		DECORATOR = "----"
+		DECORATOR_BEGIN = "\n" + DECORATOR
+		DECORATOR_END = DECORATOR + "\n"
+
+		return "\n" + DECORATOR_BEGIN + " GAME " + name + " INFO " + DECORATOR_END
 
 	@classmethod
 	def GAME_INFO_END_S(cls, name):
-		return "\n---- END " + name + " INFO ----\n"
+		DECORATOR = "----"
+		DECORATOR_BEGIN = "\n" + DECORATOR
+		DECORATOR_END = DECORATOR + "\n"
+
+		return DECORATOR_BEGIN + " END " + name + " INFO " + DECORATOR_END
+
+	@classmethod
+	def PLAYER_INFO_S(cls, name):
+		DECORATOR = "----"
+		DECORATOR_BEGIN = "\n" + DECORATOR
+		DECORATOR_END = DECORATOR + "\n"
+
+		return DECORATOR_BEGIN + " Player " + str(name) + " info " + DECORATOR_END
 
 
 
-	###	EXCEPTION MESSAGES
+
+	###	EXCEPTION MESSAGES ###
 	@classmethod
 	def NO_INFO_PLAYER(cls, name):
 		return "There is no info about Player " + name + "."
@@ -79,9 +145,10 @@ class Sentences:
 
 
 
+	### DEBUG SENTENCES ###
 	@classmethod
 	def CREATE_PLAYER(cls, name):
-		return "player " + name + " created."
+		return "Player " + name + " created."
 
 	@classmethod
 	def CREATE_TEAM(cls, name):
@@ -103,4 +170,8 @@ class Sentences:
 
 	@classmethod
 	def DEL_GAME(cls, name):
-		return "---- GAME " + name + " DELETED ----"
+		DECORATOR = "----"
+		DECORATOR_BEGIN = "\n" + DECORATOR
+		DECORATOR_END = DECORATOR + "\n"
+
+		return DECORATOR_BEGIN + " GAME " + name + " DELETED " + DECORATOR_END

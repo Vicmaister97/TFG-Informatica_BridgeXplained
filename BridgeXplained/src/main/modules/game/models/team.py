@@ -10,20 +10,13 @@ class Team:
 		self.name = name
 		self.HC = 0
 		self.players = []
+		self.cards = []
 		logging.debug(Sentences.CREATE_TEAM(self.name))
 
-	"""
-	def getPlayers(self):
-		return self.players
-	"""
 
+	### BASIC METHODS ###
 	def addPlayer(self, player):
 		self.players.append(player)
-
-
-	def updateHC(self, HC):
-		self.HC += HC
-
 
 	def __str__(self):
 		try:
@@ -38,17 +31,15 @@ class Team:
 
 	def deleteTeam(self):
 		self.players = []
+		self.cards = []
 		logging.debug(Sentences.DEL_TEAM(self.name))
 		del self
 
 
-	"""
-	def getHC(self):
-		# As this info is updated through the reasoning,
-		# 	this method is going to calculate
-		# 	the *current* HC from the players info.
-		self.HC = 0
-		for player in self.players:
-			self.HC += player.getHC()
-		return self.HC
-	"""
+
+	### ATRIBUTES/INFO FOR RULES ###
+	def updateHC(self, HC):
+		self.HC += HC
+
+	def updateCard(self, card, suit):
+		self.cards.append((card, suit))

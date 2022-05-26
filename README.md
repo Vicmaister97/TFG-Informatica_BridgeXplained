@@ -9,9 +9,9 @@ TASKS:
 
 ********************** TO BE DONE **********************
 
+-	Meter las reglas de basic_example!!! Ya que las tenemos, que saque los Honores que tiene cada uno
 
--	LIMPIAR CLASES de Honores y AJUSTAR a la nueva info!!!!!!!!!!!
--	Starting program -- PRINT -- GAME INFO !!!!!!!!!!!!!!!
+-	PROBAR A VER QUÉ VE OTRO JUGADOR!!!!! Vamos, cuando se pide ver qué sabe otro player, coger infoGame.kfb y cambiar el turno! Pero **ojo**, hay que asignarles a *TODOS LAS CARTAS*, y que solo se vean las que corresponden. O al menos asignarle las cartas al jugador de turno.
 
 
 
@@ -72,6 +72,22 @@ TASKS:
 
 
 
+-	Hacer que cuando se juege una carta juega(...) (recordamos que sale -> juega), esa carta no la tenga ya los players!!!!
+
+-	Hacer una regla finBaza() que de a la pareja ganadora esa baza(**PUNTOS**)!!! Y que haga que comience la siguiente el ganador de esa baza (que saque bazaActual(baza+1), vaGanandoBaza(notYet), turno(winner))
+
+
+
+-	SEPARAR metodos basicos de las clases (Player... metodos create, print...) con los que son CUSTOM DE LAS REGLAS DE LOS QUE QUEREMOS METER como HC !!!!!!!
+
+	SOL: SEPARAR MODELO de SERVICIO!!!!!!!!!!!!!!!!!!
+
+
+-	Ajustar a la nueva info/atributos de las clases!!!!!!!!!!!
+-	Starting program -- PRINT -- GAME INFO !!!!!!!!!!!!!!!
+
+-	Indicar al llamar al driver el .kfb elegido!! Para tener varios ejercicios.
+
 -	UNIR ManageGame con driver!!! Poner todos los métodos de ManageGame como métodos del driver para llamarlos.
 
 	-	Quizás crear BridgeXplained.py donde se llama a driver y los métodos de ManageGames, ManagePlayers y ManageTeams
@@ -109,6 +125,14 @@ TASKS:
 -	BC errors solved (do not name a variable "rule")
 
 -	Dejar basic_example fino fino.
+
+-	Algunas reglas basicas como bazaActual(1), vaGanandoBaza(W) o turno(E), hacer que las saque de otras reglas como sale(...) o tiene(...).
+
+-	**OJO** Para comparar cartas y demás, RECORDAR QUE HAY JQKA!!
+	-	SOL: METER PARES (2,2), (3,3), ..., (10,10), (J, 11), (Q, 12), (K, 13) para que siempre tenga el valor numerico
+
+-	Hacer que la regla tiene(...) añada en el objeto player correspondiente esa carta
+
 
 .
 

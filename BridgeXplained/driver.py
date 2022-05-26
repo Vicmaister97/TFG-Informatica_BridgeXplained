@@ -45,7 +45,7 @@ def fc():
 			# Run the engine and measure time of the complete FC reasoning
 			runEngine('fc_infoGame')
 
-			###########ManageGames.printGames()
+			ManageGames.printGames()
 
 			# To run several times the forward-chaining test without
 			# executing again the engine complete reasoning

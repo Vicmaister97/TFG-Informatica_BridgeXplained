@@ -1,21 +1,9 @@
 #infoGame.kfb
 
-### AXIOMS
+
+### CREATE OBJECTS
 
 initGame()
-
-jugadorDerecha(S,E)
-jugadorDerecha(E,N)
-jugadorDerecha(N,W)
-jugadorDerecha(W,S)
-compi(N,S)
-compi(S,N)
-compi(E,W)
-compi(W,E)
-jugadorIzquierda(S,W)
-jugadorIzquierda(W,N)
-jugadorIzquierda(N,E)
-jugadorIzquierda(E,S)
 
 
 ### GAME SITUATION
@@ -39,6 +27,7 @@ tiene(N,Q,P)
 tiene(N,10,P)
 tiene(N,K,C)
 tiene(N,8,C)
+tiene(N,5,C)
 tiene(N,A,D)
 tiene(N,Q,D)
 tiene(N,10,D)
@@ -50,9 +39,6 @@ tiene(N,2,T)
 
 sale(W,1,6,C)
 juega(N,1,5,C)
-bazaActual(1)
-vaGanandoBaza(W)
-turno(E)
 
 
 ### OBJETIVE

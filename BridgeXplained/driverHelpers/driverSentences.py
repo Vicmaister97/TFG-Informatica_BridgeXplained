@@ -4,8 +4,8 @@ class DriverSentences:
 	### USER MESSAGES
 	TRUE_RULE = "\n------------\n%s\nTHE RULE YOU WROTE IS TRUE!!!!!!!!!!\n------------\n"
 	FALSE_RULE = "\n------------\n%s\nThe rule you wrote is False.\n------------\n"
-	RESET_S = "\n\n********RESETTING BridgeXplained********\n\n"
-	START = "\n\n********STARTING BridgeXplained********\n%s\n\n"
+	RESET_S = "\n\n******** RESETTING BridgeXplained ********\n\n"
+	START = "\n\n******** STARTING BridgeXplained ********\n%s\n\n"
 
 	PROOF_BEGIN_DECORATOR = "\n\n\n------------------------------------\n"
 	PROOF_END_DECORATOR = "\n------------------------------------\n\n\n"
