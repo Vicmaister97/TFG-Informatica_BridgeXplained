@@ -40,6 +40,11 @@ tiene(N,2,T)
 sale(W,1,6,C)
 juega(N,1,5,C)
 
+##bazaActual(1)
+##vaGanandoBaza(W)
+##turno(E)
+
+
 
 ### OBJETIVE
 #juega(E,1,X,Y)     // SI NO TIENE CORAZONES, CUALQUIER CARTA, por eso la última es una Y

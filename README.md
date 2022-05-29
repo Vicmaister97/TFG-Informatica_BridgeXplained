@@ -70,9 +70,10 @@ TASKS:
 
 -	**REGLAS EJERCICIO 1 BRIDGE**
 
+-	Mejorar la clase Player para que guarde como atributos las cartas jugadas y conocidas, y a partir de ahi poder sacar:
+	-	Las cartas que un Player puede jugar
+	-	Las cartas conocidas totales de ese Player
 
-
--	Hacer que cuando se juege una carta juega(...) (recordamos que sale -> juega), esa carta no la tenga ya los players!!!!
 
 -	Hacer una regla finBaza() que de a la pareja ganadora esa baza(**PUNTOS**)!!! Y que haga que comience la siguiente el ganador de esa baza (que saque bazaActual(baza+1), vaGanandoBaza(notYet), turno(winner))
 
@@ -129,7 +130,9 @@ TASKS:
 -	Algunas reglas basicas como bazaActual(1), vaGanandoBaza(W) o turno(E), hacer que las saque de otras reglas como sale(...) o tiene(...).
 
 -	**OJO** Para comparar cartas y demás, RECORDAR QUE HAY JQKA!!
-	-	SOL: METER PARES (2,2), (3,3), ..., (10,10), (J, 11), (Q, 12), (K, 13) para que siempre tenga el valor numerico
+	-	SOL: Implementar un comparador en la clase Auxiliary que tenga esto en cuenta
+
+-	Sentences relacionadas con mostrar las cartas las muestra ordenadas por palos y dentro de cada palo por carta!!
 
 -	Hacer que la regla tiene(...) añada en el objeto player correspondiente esa carta
 

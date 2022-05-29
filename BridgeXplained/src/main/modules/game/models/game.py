@@ -48,6 +48,10 @@ class Game:
 
 
 	### AUXILIARY METHODS FOR RULES ###
+
+	## Example of the power of PyKE integration with Python!!
+	##		This logic only in PyKE rules... A mess.
+	##		But in Python, it's easier.
 	def getLastPlayer(self, playersThatHavePlayed):
 		if len(playersThatHavePlayed) == 4:
 			# All players have played, so new round
@@ -77,16 +81,23 @@ class Game:
 
 		return lastPlayer
 
-
+	"""
 	def checkIfAbleToPlay(self, playerName, card, suit):
 		self.playerManager.getPlayerFromName(playerName).checkIfAbleToPlay(card, suit)
-
+	"""
 
 	## ADD INFO FROM RULES TO OBJECTS
 	def setCard(self, playerName, card, suit):
 		self.playerManager.getPlayerFromName(playerName).setCard(card, suit)
 		self.teamManager.getTeamFromPlayer(playerName).updateCard(card, suit)	# Update cards of the team
 		self.knownCards.append((card, suit))
+
+	## ADD INFO FROM RULES TO OBJECTS
+	def setPlayedCard(self, playerName, card, suit):
+		self.playerManager.getPlayerFromName(playerName).setPlayedCard(card, suit)
+		self.teamManager.getTeamFromPlayer(playerName).updatePlayedCard(card, suit)	# Update played cards of the team
+		if (card, suit) not in self.knownCards:
+			self.knownCards.append((card, suit))
 
 	def stringCardsGlobal(self):
 		return Sentences.GAME_KNOWNCARDS_S(self.knownCards)
