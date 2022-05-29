@@ -44,12 +44,14 @@ class Team:
 
 	### ATRIBUTES/INFO FOR RULES ###
 	def updateCard(self, card, suit):
-		self.knownCards.append((card, suit))
 		self.cards.append((card, suit))
+		self.knownCards.append((card, suit))
 
 	def updatePlayedCard(self, card, suit):
-		self.knownCards.append((card, suit))
 		self.playedCards.append((card, suit))
+		if (card, suit) not in self.knownCards:
+			self.knownCards.append((card, suit))
+
 
 	def getCardsToPlay(self):
 		toPlayCards = self.knownCards
