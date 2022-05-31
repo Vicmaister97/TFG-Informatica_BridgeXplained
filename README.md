@@ -9,19 +9,19 @@ TASKS:
 
 ********************** TO BE DONE **********************
 
--	Meter las reglas de basic_example!!! Ya que las tenemos, que saque los Honores que tiene cada uno
 
--	PROBAR A VER QUÉ VE OTRO JUGADOR!!!!! Vamos, cuando se pide ver qué sabe otro player, coger infoGame.kfb y cambiar el turno! Pero **ojo**, hay que asignarles a *TODOS LAS CARTAS*, y que solo se vean las que corresponden. O al menos asignarle las cartas al jugador de turno.
-
-
+-	PREGUNTAS Y RESPUESTAS AL USUARIO
 
 -	**CREAR TESTS!!!!!!** Para clases (test unitarios) y para el driver (test integración)
 
--	Logging engine stats
+-	Comentar todos los ficheros con mis datos (correo...)
+
+-	Mejorar todos los README con celdas para las líneas de código a ejecutar... (rollo TFG Mates)
 
 
 
 ---- USABILIDAD ----
+
 
 -	Sacar *lista de reglas actualizadas definidas en el .krb* para poder *preguntarlas como usuario*. Es que si no, no tiene sentido pq no van a poder hacer preguntas de razonamientos especificos.
 
@@ -39,27 +39,36 @@ TASKS:
 
 
 
--	**ARBOL DE RAZONAMIENTO/DEDUCCION!!!!!!!!!!!!!!!!!!**
-
-	-	Representacion grafica del **arbol logico** en cada deduccion, compo hace DFS o recorrido en profundidad de las reglas logicas
-	
-	-	Tabular los "VIENE DE --" para visión de arbol
+--- MEJORAS DE CODIGO ---
 
 
+-	Logging engine stats
+
+-	Variables anonimas en PyKE (http://pyke.sourceforge.net/logic_programming/pattern_matching/pattern_variables.html#anonymous-pattern-variables)
 
 -	SEPARAR metodos basicos de las clases (Player... metodos create, print...) con los que son CUSTOM DE LAS REGLAS DE LOS QUE QUEREMOS METER como HC !!!!!!!
 
 	SOL: SEPARAR MODELO de SERVICIO!!!!!!!!!!!!!!!!!!
 
--	Probar PREGUNTAS Y RESPUESTAS AL USUARIO
+
+
+--- NEW FEATURES ---
+
 
 -	CREADOR DE EJERCICIOS DINÁMICO!!!!!!!!
 
 	-	PROBAR A LEER UN ESTADO DE PARTIDA DE UN .TXT (*partida.txt*) Y CARGARLO EN EL .KFB (conjunto de hechos).
 
--	Comentar todos los ficheros con mis datos (correo...)
 
--	Mejorar todos los README con celdas para las líneas de código a ejecutar... (rollo TFG Mates)
+-	Meter las reglas de basic_example!!! Ya que las tenemos, que saque los Honores que tiene cada uno
+
+-	PROBAR A VER QUÉ VE OTRO JUGADOR!!!!! Vamos, cuando se pide ver qué sabe otro player, coger infoGame.kfb y cambiar el turno! Pero **ojo**, hay que asignarles a *TODOS LAS CARTAS*, y que solo se vean las que corresponden. O al menos asignarle las cartas al jugador de turno.
+
+-	**ARBOL DE RAZONAMIENTO/DEDUCCION!!!!!!!!!!!!!!!!!!**
+
+	-	Representacion grafica del **arbol logico** en cada deduccion, compo hace DFS o recorrido en profundidad de las reglas logicas
+	
+	-	Tabular los "VIENE DE --" para visión de arbol
 
 
 .
@@ -68,7 +77,7 @@ TASKS:
 
 ********************** IN PROGRESS **********************
 
--	**REGLAS EJERCICIO 1 BRIDGE**
+-	**REGLAS EJERCICIO 1 BRIDGE BC**
 
 
 -	Hacer una regla finBaza() que de a la pareja ganadora esa baza(**PUNTOS**)!!! Y que haga que comience la siguiente el ganador de esa baza (que saque bazaActual(baza+1), vaGanandoBaza(notYet), turno(winner))
@@ -99,7 +108,7 @@ TASKS:
 
 -	Probar a POBLAR LAS CLASES *PLAYER*, *TEAM* y *GAME* desde las propias reglas (alternativa: con los .txt de las conclusiones).
 
--	Gestionar accesibilidad (privado vs publico, de clase o instancia) de los métodos y atributos de las clases MANAGER. Asegurar que podemos obtener información de éstas desde driver.py u cualquier otra parte del código (los objetos se crean desde las reglas).
+-	Gestionar accesibilidad (de clase o instancia) de los métodos y atributos de las clases MANAGER. Asegurar que podemos obtener información de éstas desde driver.py u cualquier otra parte del código (los objetos se crean desde las reglas).
 
 -	Crear excepciones de las clases creadas. Lanzar excepciones cuando fallan estas clases para gestionarlas desde driver.py.
 
@@ -121,7 +130,11 @@ TASKS:
 
 -	BC errors solved (do not name a variable "rule")
 
--	Dejar basic_example fino fino.
+-	Finalizar basic_example.
+
+
+-	**INTEGRACION COMPLETA DE LAS CLASES EN LAS REGLAS DE PYKE y driver.py**
+
 
 -	Algunas reglas basicas como bazaActual(1), vaGanandoBaza(W) o turno(E), hacer que las saque de otras reglas como sale(...) o tiene(...).
 
@@ -136,6 +149,7 @@ TASKS:
 	-	Las cartas que un Player puede jugar
 	-	Las cartas conocidas totales de ese Player
 
+-	**REGLAS EJERCICIO 1 BRIDGE FC**
 
 .
 
