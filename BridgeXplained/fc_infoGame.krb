@@ -165,7 +165,7 @@ ultimo_jugador
 
         # Vamos a ver, a partir de todas las proposiciones sale(...)
         #   y juega(...) de la baza actual, el ultimo jugador
-        python players = [str($player)]
+        python players = []
         python lastPlayerOrNextRound = $player
 
         forall
@@ -218,7 +218,7 @@ activar_fin_baza
 
     assert
         # Escribir en el fichero de conclusiones
-        python phrase_explained = "\nHa terminado la baza actual!! (Baza %d) \n" % ($baza)
+        python phrase_explained = "\nHa terminado la baza actual!! (Baza %d) \n" % (int($baza))
 
         python print(phrase_explained)
         python f = open("conclusions/conclusiones.txt", "a")
@@ -239,10 +239,11 @@ fin_baza
         infoGame.vaGanandoBaza($winner)
 
         python bazaNueva = $baza + 1
+        $bazaNueva = int(bazaNueva)
 
     assert
         # Escribir en el fichero de conclusiones
-        python phrase_explained = "\nNueva baza!! (Baza %d) \nTurno del jugador: %s\n" % (bazaNueva, $winner)
+        python phrase_explained = "\nNueva baza!! (Baza %d) \nTurno del jugador: %s\n" % ($bazaNueva, $winner)
 
         python print(phrase_explained)
         python f = open("conclusions/conclusiones.txt", "a")
@@ -251,7 +252,7 @@ fin_baza
 
 
         # Nuevas reglas
-        infoGame.bazaActual(bazaNueva)
+        infoGame.bazaActual($bazaNueva)
         infoGame.turno($winner)
         infoGame.vaGanandoBaza("None")
 
@@ -274,6 +275,54 @@ activar_mayores_eval
         # New rules to evaluate
         infoGame.mayores($compi, $numCarta, $palo)
         infoGame.mayores($jugIzq, $numCarta, $palo)
+
+activar_menor_eval
+    foreach
+        infoGame.initialized()
+        infoGame.contrato($num, ST, $playerContrato)
+        infoGame.bazaActual($numBaza)
+        infoGame.turno($playerTurno)
+        infoGame.jugadorIzquierda($playerTurno, $playerIzquierda)
+        infoGame.compi($playerTurno, $compi)
+        infoGame.sale($compi, $numBaza, $numCarta, $palo)
+        infoGame.mayoresEval($playerContrato, $numCarta, $palo, 0)
+
+    assert
+        # New rules to evaluate
+        infoGame.menor($playerTurno, $palo)
+
+menor_eval
+    foreach
+        infoGame.initialized()
+        infoGame.menor($player, $palo)
+
+        # Vamos a ver, con las cartas que tenga ese jugador del palo,
+        #   la menor de ellas.
+        python menor = 15
+
+        forall
+            infoGame.tiene($player, $numCarta, $palo)
+
+            python global aux
+            python check = aux.compare($numCarta, menor)
+            $isLess = int(check)
+            check $isLess == -1
+            python menor = $numCarta
+
+        $menor = menor
+
+    assert
+        # Escribir en el fichero de conclusiones
+        python phrase_explained = "\nLa carta menor del jugador %s en el palo %s es %s\n" % ($player, $palo, $menor)
+
+        python print(phrase_explained)
+        python f = open("conclusions/conclusiones.txt", "a")
+        python f.write(phrase_explained)
+        python f.close()
+
+
+        # Nueva regla
+        infoGame.menorEval($player, $palo, $menor)
 
 
 mayores_eval
@@ -349,4 +398,30 @@ regla_del_11_2do_defensor
         python f.close()
 
         #Nueva regla
-        infoGame.mayoresFromRegla($playerContrato, $numCarta, $palo, $mayoresContrato)
+        infoGame.mayoresEval($playerContrato, $numCarta, $palo, $mayoresContrato)
+
+principio_de_economia
+    foreach
+        infoGame.initialized()
+        infoGame.contrato($num, ST, $playerContrato)
+        infoGame.bazaActual($numBaza)
+        infoGame.turno($playerTurno)
+        infoGame.jugadorIzquierda($playerTurno, $playerIzquierda)
+        infoGame.compi($playerTurno, $compi)
+        infoGame.sale($compi, $numBaza, $numCarta, $palo)
+        infoGame.mayoresEval($playerContrato, $numCarta, $palo, 0)
+
+        infoGame.menorEval($playerTurno, $palo, $menor)
+
+    assert
+        python print("\n\n-- Principio de economia -- \n Si sabes que el jugador de la izquierda NO TIENE CARTAS MAYORES que la que ha jugado tu compi, y tu compi VA GANANDO LA BAZA, juega la carta mas baja.\n Conclusion!!!!!!")
+        # Escribir en el fichero de conclusiones
+        python phrase_explained = "\n\t-- juega(%s, %d, %s, %s)!!!\n" % ($playerTurno, $numBaza, $menor, $palo)
+
+        python print(phrase_explained)
+        python f = open("conclusions/conclusiones.txt", "a")
+        python f.write(phrase_explained)
+        python f.close()
+
+        #Nueva regla
+        infoGame.juega($playerTurno, $numBaza, $menor, $palo)
