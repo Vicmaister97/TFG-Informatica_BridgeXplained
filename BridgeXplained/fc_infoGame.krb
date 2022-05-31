@@ -26,11 +26,6 @@ init_player
         python game.createPlayer("W", "EW")
 
 
-        # Objects initialized
-        # Nuevas reglas
-        infoGame.initialized()
-        infoGame.vaGanandoBaza("None")
-
         # Axioms
         infoGame.jugadorDerecha(S,E)
         infoGame.jugadorDerecha(E,N)
@@ -44,6 +39,11 @@ init_player
         infoGame.jugadorIzquierda(W,N)
         infoGame.jugadorIzquierda(N,E)
         infoGame.jugadorIzquierda(E,S)
+
+        # All initialized
+        # Nuevas reglas
+        infoGame.vaGanandoBaza("None")
+        infoGame.initialized()
 
 
 
@@ -67,6 +67,7 @@ tiene_player
         python global game
         python game.setCard($player, $numCarta, $palo)
 
+
 juega_player
     foreach
         infoGame.initialized()
@@ -75,7 +76,6 @@ juega_player
     assert
         python global game
         python game.setPlayedCard($player, $numCarta, $palo)
-
 
 
 
@@ -91,6 +91,7 @@ turno_despues_contrato
     assert
         # Nueva regla
         infoGame.turno($turno)
+
 
 
 baza_actual
@@ -157,6 +158,7 @@ va_ganando_baza
         infoGame.vaGanandoBaza($winner)
 
 
+
 ultimo_jugador
     foreach
         infoGame.initialized()
@@ -204,6 +206,7 @@ turno
 
         # Nueva regla
         infoGame.turno($player)
+
 
 
 activar_fin_baza
@@ -257,6 +260,7 @@ fin_baza
         infoGame.vaGanandoBaza("None")
 
 
+
 activar_mayores_eval
     foreach
         infoGame.initialized()
@@ -276,6 +280,7 @@ activar_mayores_eval
         infoGame.mayores($compi, $numCarta, $palo)
         infoGame.mayores($jugIzq, $numCarta, $palo)
 
+
 activar_menor_eval
     foreach
         infoGame.initialized()
@@ -290,6 +295,7 @@ activar_menor_eval
     assert
         # New rules to evaluate
         infoGame.menor($playerTurno, $palo)
+
 
 menor_eval
     foreach
@@ -360,6 +366,7 @@ mayores_eval
 
 
 
+
 ### RULES ###
 regla_del_11_2do_defensor
     foreach
@@ -398,7 +405,7 @@ regla_del_11_2do_defensor
         python f.close()
 
         #Nueva regla
-        infoGame.mayoresEval($playerContrato, $numCarta, $palo, $mayoresContrato)
+        infoGame.mayoresEval_new($playerContrato, $numCarta, $palo, $mayoresContrato)
 
 principio_de_economia
     foreach
@@ -424,4 +431,4 @@ principio_de_economia
         python f.close()
 
         #Nueva regla
-        infoGame.juega($playerTurno, $numBaza, $menor, $palo)
+        infoGame.juegaNext($playerTurno, $numBaza, $menor, $palo)
