@@ -209,58 +209,6 @@ turno
 
 
 
-activar_fin_baza
-    foreach
-        infoGame.initialized()
-        infoGame.ultimoJugador($lastPlayer)
-
-        # Comprobamos que estamos en el final de una baza
-        check $lastPlayer == "NextRound"
-
-        infoGame.bazaActual($baza)
-
-    assert
-        # Escribir en el fichero de conclusiones
-        python phrase_explained = "\nHa terminado la baza actual!! (Baza %d) \n" % (int($baza))
-
-        python print(phrase_explained)
-        python f = open("conclusions/conclusiones.txt", "a")
-        python f.write(phrase_explained)
-        python f.close()
-
-
-        # Nuevas reglas
-        infoGame.finBaza($baza)
-
-
-fin_baza
-    foreach
-        infoGame.initialized()
-        infoGame.finBaza($baza)
-
-        infoGame.bazaActual($baza)
-        infoGame.vaGanandoBaza($winner)
-
-        python bazaNueva = $baza + 1
-        $bazaNueva = int(bazaNueva)
-
-    assert
-        # Escribir en el fichero de conclusiones
-        python phrase_explained = "\nNueva baza!! (Baza %d) \nTurno del jugador: %s\n" % ($bazaNueva, $winner)
-
-        python print(phrase_explained)
-        python f = open("conclusions/conclusiones.txt", "a")
-        python f.write(phrase_explained)
-        python f.close()
-
-
-        # Nuevas reglas
-        infoGame.bazaActual($bazaNueva)
-        infoGame.turno($winner)
-        infoGame.vaGanandoBaza("None")
-
-
-
 activar_mayores_eval
     foreach
         infoGame.initialized()
@@ -406,6 +354,7 @@ regla_del_11_2do_defensor
 
         #Nueva regla
         infoGame.mayoresEval_new($playerContrato, $numCarta, $palo, $mayoresContrato)
+
 
 principio_de_economia
     foreach

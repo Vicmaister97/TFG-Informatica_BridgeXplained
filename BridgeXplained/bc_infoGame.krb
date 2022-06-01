@@ -1,2 +1,385 @@
 # bc_infoGame.krb
 
+sale_es_juega
+    use juega($playerSale, $numBaza, $numCarta, $palo)
+    when
+		initialized()
+		sale($playerSale, $numBaza, $numCarta, $palo)
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\nSale es juega!\n"
+		python explain = "VIENE DE -- INITIAL FACT: El jugador %s ha salido en la baza %d con el %s de %s.\n" % ($playerSale, $numBaza, $numCarta, $palo)
+		python phrase_explained += explain
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+
+
+turno_despues_contrato
+    use turno($turno)
+    when
+		initialized()
+		vaGanandoBaza("None")
+		bazaActual(1)
+		contrato($nivel, $denominacion, $player)
+
+		jugadorIzquierda($player, $turno)
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\nTurno del jugador: %s. Es el jugador a la izquierda del ganador del contrato (1era baza).\n" % ($player)
+		
+		python explain = "VIENE DE -- INITIAL FACTS: Es la 1era baza && Nadie va ganando la baza && El contrato es del jugador %s && El jugador de su izquierda es %s.\n" % ($player, $turno)
+
+		python phrase_explained += explain
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+
+
+baza_actual
+    use bazaActual($tot)
+    when
+		initialized()
+
+		# Vamos a ver, a partir de todas las proposiciones sale(...)
+		#   la baza actual
+		python tot = 1
+		python explain = None
+
+		forall
+			sale($player, $baza, $numCarta, $palo)
+
+			check $baza > tot
+			python tot = $baza
+
+			# Escribir el initial facts
+			python explain = "VIENE DE -- INITIAL FACT: El jugador %s ha salido en la baza %d con el %s de %s.\n" % ($player, $baza, $numCarta, $palo)
+		$tot = int(tot)
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\nBaza actual: %d.\n" % ($tot)
+		python phrase_explained += explain
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+
+va_ganando_baza_sale
+    use vaGanandoBaza($winner)
+    when
+		initialized()
+		bazaActual($baza)
+		sale($player, $baza, $numCarta, $palo)
+
+		# Vamos a ver, a partir de todas las proposiciones sale(...)
+		#   y juega(...) de la baza actual, quien va ganando
+		python winner = $player
+
+		forall
+			juega($player2, $baza, $numCarta2, $palo)
+
+			python global aux
+			python check = aux.compare($numCarta2, $numCarta)
+			$isGreater = int(check)
+			check $isGreater == 1
+			python winner = $player2
+
+		$winner = str(winner)
+		check winner == $player
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\nGanador de la baza actual: %s\nVIENE DE que ha jugado en la baza %d el %s de %s.\n" % ($winner, , $baza, $numCarta, $palo)
+
+		python rule1 = "juega(%s, %d, %d, %s)\n" % ($player, $baza, $numCarta, $palo)
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+		python midRules = open("conclusions/midRules.txt", "a")
+		python midRules.write(rule1)
+		python midRules.close()
+
+va_ganando_baza
+    use vaGanandoBaza($winner)
+    when
+		initialized()
+		bazaActual($baza)
+		sale($player, $baza, $numCarta, $palo)
+
+		# Vamos a ver, a partir de todas las proposiciones sale(...)
+		#   y juega(...) de la baza actual, quien va ganando
+		python winner = $player
+		python explain = None
+
+		forall
+			juega($player2, $baza, $numCarta2, $palo)
+
+			python global aux
+			python check = aux.compare($numCarta2, $numCarta)
+			$isGreater = int(check)
+			check $isGreater == 1
+			python winner = $player2
+
+			# Escribir el initial fact
+			python explain = "VIENE DE -- INITIAL FACT: El jugador %s ha jugado el %s de %s.\n" % ($player2, $baza, $numCarta2, $palo)
+
+		$winner = str(winner)
+		check winner != $player
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\nGanador de la baza actual: %s\n" % ($winner)
+		python phrase_explained += explain
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+		
+
+
+
+ultimo_jugador
+    use ultimoJugador($lastPlayerOrNextRound)
+    when
+		initialized()
+		bazaActual($baza)
+		sale($player, $baza, $numCarta, $palo)
+
+		# Vamos a ver, a partir de todas las proposiciones sale(...)
+		#   y juega(...) de la baza actual, el ultimo jugador
+		python players = []
+		python lastPlayerOrNextRound = $player
+
+		forall
+			juega($player2, $baza, $numCarta2, $palo2)
+
+			python players.append(str($player2))
+
+		python global game
+		python lastPlayerOrNextRound = game.getLastPlayer(players)
+		$lastPlayerOrNextRound = str(lastPlayerOrNextRound)
+
+
+turno
+    use turno($player)
+    when
+		initialized()
+		ultimoJugador($lastPlayer)
+
+		# Comprobamos que no estamos en el final de una baza
+		check $lastPlayer != "NextRound"
+
+		jugadorIzquierda($lastPlayer, $player)
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\nTurno del jugador: %s\n" % ($player)
+
+		python phrase_explained += "VIENE DE que el ultimo jugador es %s y de que %s es el jugador a su izquierda.\n" % ($lastPlayer, $player)
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+
+
+activar_mayores_eval
+    use mayores($compi, $numCarta, $palo)
+    when
+		initialized()
+		sale($playerSale, 1, $numCarta, $palo)
+
+		python global aux
+		python check = aux.compareEquals($numCarta, 9)
+		$isLessOrEquals = int(check)
+		check $isLessOrEquals == -1
+
+		# Atributos que se pueden evaluar
+		compi($playerSale, $compi)
+		jugadorIzquierda($playerSale, $jugIzq)
+
+activar_mayores_eval2
+    use mayores($jugIzq, $numCarta, $palo)
+    when
+		initialized()
+		sale($playerSale, 1, $numCarta, $palo)
+
+		python global aux
+		python check = aux.compareEquals($numCarta, 9)
+		$isLessOrEquals = int(check)
+		check $isLessOrEquals == -1
+
+		# Atributos que se pueden evaluar
+		compi($playerSale, $compi)
+		jugadorIzquierda($playerSale, $jugIzq)
+
+		# New rules to evaluate
+		mayores($jugIzq, $numCarta, $palo)
+
+
+activar_menor_eval
+    use menor($playerTurno, $palo)
+    when
+		initialized()
+		contrato($num, ST, $playerContrato)
+		bazaActual($numBaza)
+		turno($playerTurno)
+		jugadorIzquierda($playerTurno, $playerIzquierda)
+		compi($playerTurno, $compi)
+		sale($compi, $numBaza, $numCarta, $palo)
+		mayoresEval($playerContrato, $numCarta, $palo, 0)
+
+
+menor_eval
+    use menorEval($player, $palo, $menor)
+    when
+		initialized()
+		menor($player, $palo)
+
+		# Vamos a ver, con las cartas que tenga ese jugador del palo,
+		#   la menor de ellas.
+		python menor = 15
+
+		forall
+			tiene($player, $numCarta, $palo)
+
+			python global aux
+			python check = aux.compare($numCarta, menor)
+			$isLess = int(check)
+			check $isLess == -1
+			python menor = $numCarta
+
+		$menor = menor
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\nLa carta menor del jugador %s en el palo %s es %s\n" % ($player, $palo, $menor)
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+
+mayores_eval
+    use mayoresEval($player, $numCarta, $palo, $tot)
+    when
+		initialized()
+		mayores($player, $numCarta, $palo)
+
+		# Vamos a ver, con las cartas que tenga ese jugador del palo,
+		#   el numero de cartas mayores que numCarta
+		python tot = 0
+
+		forall
+			tiene($player, $numCarta2, $palo)
+
+			python global aux
+			python check = aux.compare($numCarta2, $numCarta)
+			$isGreater = int(check)
+			check $isGreater == 1
+			python tot += 1
+
+		$tot = int(tot)
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\nEl jugador %s tiene %d cartas mayores que la carta de salida(%d de %s)\n" % ($player, $tot, $numCarta, $palo)
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+
+
+
+### RULES ###
+regla_del_11_2do_defensor
+    use mayoresEval_new($playerContrato, $numCarta, $palo, $mayoresContrato)
+    when
+		initialized()
+		contrato($num, ST, $playerContrato)
+		sale($playerSale, 1, $numCarta, $palo)
+
+		python global aux
+		python check = aux.compareEquals($numCarta, 9)
+		$isLessOrEquals = int(check)
+		check $isLessOrEquals == -1
+		python valorCarta = aux.cardToNumber($numCarta)
+		$valorCarta = valorCarta
+		
+
+		# Axiomas
+		compi($playerSale, $compi)
+		jugadorIzquierda($playerSale, $jugIzq)
+
+
+		mayoresEval($compi, $numCarta, $palo, $mayoresCompi)
+		mayoresEval($jugIzq, $numCarta, $palo, $mayoresIzq)
+
+		python mayoresContrato = 11 - $valorCarta - $mayoresCompi - $mayoresIzq
+
+		$mayoresContrato = int(mayoresContrato)
+
+
+		# Probar las proposiciones de origen
+		
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\n\n-- Regla del 2do defensor -- Conclusion!!!!!!"
+		
+		python phrase_explained += "\n\t-- mayores(%s, %d, %s) ES %d!!!\n" % ($playerContrato, $numCarta, $palo, $mayoresContrato)
+
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+
+principio_de_economia
+    use juegaNext($playerTurno, $numBaza, $menor, $palo)
+    when
+		initialized()
+		contrato($num, ST, $playerContrato)
+		bazaActual($numBaza)
+		turno($playerTurno)
+		jugadorIzquierda($playerTurno, $playerIzquierda)
+		compi($playerTurno, $compi)
+		sale($compi, $numBaza, $numCarta, $palo)
+		mayoresEval($playerContrato, $numCarta, $palo, 0)
+
+		menorEval($playerTurno, $palo, $menor)
+
+
+		# Probar las proposiciones de origen
+		python rules = ""
+		python rules += "bazaActual(%d))\n" % ($numBaza)
+		python rules += "turno(%s)\n" % ($playerTurno)
+		python rules += "mayoresEval(%s, %d, %s, 0)\n" % ($playerContrato, $numCarta, $palo, 0)
+		python rules += "menorEval(%s, %s, %d)\n" % ($playerTurno, $palo, $menor)
+
+
+
+		# Escribir en el fichero de conclusiones
+		python phrase_explained = "\n\n-- Principio de economia -- \n Si sabes que el jugador de la izquierda NO TIENE CARTAS MAYORES que la que ha jugado tu compi, y tu compi VA GANANDO LA BAZA, juega la carta mas baja.\n Conclusion!!!!!!"
+
+		python phrase_explained += "\n\t-- juega(%s, %d, %s, %s)!!!\n" % ($playerTurno, $numBaza, $menor, $palo)
+
+		python f = open("conclusions/conclusiones_bc.txt", "a")
+		python f.write(phrase_explained)
+		python f.close()
+
+		python midRules = open("conclusions/midRules.txt", "a")
+		python midRules.write(rules)
+		python midRules.close()
+

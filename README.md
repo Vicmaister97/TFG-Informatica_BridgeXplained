@@ -79,6 +79,10 @@ TASKS:
 
 -	**REGLAS EJERCICIO 1 BRIDGE BC**
 
+-	Tabular bien BC rules
+
+-	Mejorar VIENE DE --
+
 
 -	Hacer una regla finBaza() que de a la pareja ganadora esa baza(**PUNTOS**)!!! Y que haga que comience la siguiente el ganador de esa baza (que saque bazaActual(baza+1), vaGanandoBaza(notYet), turno(winner))
 
@@ -89,7 +93,6 @@ TASKS:
 	SOL: SEPARAR MODELO de SERVICIO!!!!!!!!!!!!!!!!!!
 
 
--	Ajustar a la nueva info/atributos de las clases!!!!!!!!!!!
 -	Starting program -- PRINT -- GAME INFO !!!!!!!!!!!!!!!
 
 -	Indicar al llamar al driver el .kfb elegido!! Para tener varios ejercicios.
@@ -143,11 +146,13 @@ TASKS:
 
 -	Sentences relacionadas con mostrar las cartas las muestra ordenadas por palos y dentro de cada palo por carta!!
 
--	Hacer que la regla tiene(...) añada en el objeto player correspondiente esa carta
+-	Ajustar la nueva info/atributos de las clases (Game, Team, Player) a la nueva info que viene de las reglas!!!!!!!!!!!
 
--	Mejorar la clase Player para que guarde como atributos las cartas jugadas y conocidas, y a partir de ahi poder sacar:
-	-	Las cartas que un Player puede jugar
-	-	Las cartas conocidas totales de ese Player
+	-	Hacer que la regla tiene(...) añada en el objeto player correspondiente esa carta
+
+	-	Mejorar la clase Player para que guarde como atributos las cartas jugadas y conocidas, y a partir de ahi poder sacar:
+		-	Las cartas que un Player puede jugar
+		-	Las cartas conocidas totales de ese Player
 
 -	**REGLAS EJERCICIO 1 BRIDGE FC**
 
